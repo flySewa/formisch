@@ -1,12 +1,12 @@
+import type { FieldElementProps } from '@formisch/solid';
 import clsx from 'clsx';
-import { createMemo, For, JSX, Show, splitProps } from 'solid-js';
+import { createMemo, For, Show, splitProps } from 'solid-js';
 import { AngleDownIcon } from '~/icons';
 import { InputErrors } from './InputErrors';
 import { InputLabel } from './InputLabel';
 
-type SelectProps = {
+interface SelectProps extends FieldElementProps {
   class?: string;
-  name: string;
   label?: string;
   options: { label: string; value: string }[];
   multiple?: boolean;
@@ -15,12 +15,7 @@ type SelectProps = {
   required?: boolean;
   input: string | string[] | null | undefined;
   errors: [string, ...string[]] | null;
-  ref: (element: HTMLSelectElement) => void;
-  onFocus: JSX.EventHandler<HTMLSelectElement, FocusEvent>;
-  onInput: JSX.EventHandler<HTMLSelectElement, InputEvent>;
-  onChange: JSX.EventHandler<HTMLSelectElement, Event>;
-  onBlur: JSX.EventHandler<HTMLSelectElement, FocusEvent>;
-};
+}
 
 /**
  * Select field that allows users to select predefined values. Various
@@ -34,6 +29,7 @@ export function Select(props: SelectProps) {
     'input',
     'options',
     'label',
+    'placeholder',
     'errors',
   ]);
 

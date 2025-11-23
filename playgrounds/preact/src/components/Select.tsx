@@ -1,14 +1,13 @@
+import type { FieldElementProps } from '@formisch/preact';
 import { ReadonlySignal, useComputed } from '@preact/signals';
 import clsx from 'clsx';
-import type { JSX } from 'preact';
 import { forwardRef } from 'preact/compat';
 import { AngleDownIcon } from '../icons';
 import { InputErrors } from './InputErrors';
 import { InputLabel } from './InputLabel';
 
-type SelectProps = {
+interface SelectProps extends FieldElementProps {
   class?: string;
-  name: string;
   label?: string;
   options: { label: string; value: string }[];
   multiple?: boolean;
@@ -17,12 +16,7 @@ type SelectProps = {
   required?: boolean;
   input: ReadonlySignal<string | string[] | null | undefined>;
   errors: ReadonlySignal<[string, ...string[]] | null>;
-  ref: (element: HTMLSelectElement) => void;
-  onFocus: JSX.FocusEventHandler<HTMLSelectElement>;
-  onInput: JSX.InputEventHandler<HTMLSelectElement>;
-  onChange: JSX.GenericEventHandler<HTMLSelectElement>;
-  onBlur: JSX.FocusEventHandler<HTMLSelectElement>;
-};
+}
 
 /**
  * Select field that allows users to select predefined values. Various

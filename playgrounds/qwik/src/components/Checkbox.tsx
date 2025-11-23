@@ -1,21 +1,16 @@
-import { component$, type QRL, ReadonlySignal } from '@qwik.dev/core';
+import type { FieldElementProps } from '@formisch/qwik';
+import { component$, ReadonlySignal } from '@qwik.dev/core';
 import clsx from 'clsx';
 import { InputErrors } from './InputErrors';
 
-type CheckboxProps = {
+interface CheckboxProps extends FieldElementProps {
   class?: string;
-  name: string;
   label?: string;
   value?: string;
   input: ReadonlySignal<boolean | undefined>;
   required?: boolean;
   errors: ReadonlySignal<[string, ...string[]] | null>;
-  ref: QRL<(element: HTMLInputElement) => void>;
-  onFocus$: QRL<(event: FocusEvent, element: HTMLInputElement) => void>;
-  onInput$: QRL<(event: InputEvent, element: HTMLInputElement) => void>;
-  onChange$: QRL<(event: Event, element: HTMLInputElement) => void>;
-  onBlur$: QRL<(event: FocusEvent, element: HTMLInputElement) => void>;
-};
+}
 
 /**
  * Checkbox that allows users to select an option. The label next to the
@@ -26,7 +21,7 @@ export const Checkbox = component$(
     const { name, required } = props;
     return (
       <div class={clsx('px-8 lg:px-10', props.class)}>
-        <label class="flex select-none space-x-4 font-medium md:text-lg lg:text-xl">
+        <label class="flex space-x-4 font-medium select-none md:text-lg lg:text-xl">
           <input
             {...props}
             class="mt-1 h-4 w-4 cursor-pointer lg:mt-1 lg:h-5 lg:w-5"

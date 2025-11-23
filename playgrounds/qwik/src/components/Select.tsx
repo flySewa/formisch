@@ -1,17 +1,12 @@
-import {
-  component$,
-  type QRL,
-  ReadonlySignal,
-  useComputed$,
-} from '@qwik.dev/core';
+import type { FieldElementProps } from '@formisch/qwik';
+import { component$, ReadonlySignal, useComputed$ } from '@qwik.dev/core';
 import clsx from 'clsx';
 import { AngleDownIcon } from '~/icons';
 import { InputErrors } from './InputErrors';
 import { InputLabel } from './InputLabel';
 
-type SelectProps = {
+interface SelectProps extends FieldElementProps {
   class?: string;
-  name: string;
   label?: string;
   options: { label: string; value: string }[];
   multiple?: boolean;
@@ -20,12 +15,7 @@ type SelectProps = {
   required?: boolean;
   input: ReadonlySignal<string | string[] | null | undefined>;
   errors: ReadonlySignal<[string, ...string[]] | null>;
-  ref: QRL<(element: HTMLSelectElement) => void>;
-  onFocus$: QRL<(event: FocusEvent, element: HTMLSelectElement) => void>;
-  onInput$: QRL<(event: InputEvent, element: HTMLSelectElement) => void>;
-  onChange$: QRL<(event: Event, element: HTMLSelectElement) => void>;
-  onBlur$: QRL<(event: FocusEvent, element: HTMLSelectElement) => void>;
-};
+}
 
 /**
  * Select field that allows users to select predefined values. Various

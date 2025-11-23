@@ -1,22 +1,17 @@
+import type { FieldElementProps } from '@formisch/qwik';
 import type { ReadonlySignal } from '@qwik.dev/core';
-import { component$, type QRL } from '@qwik.dev/core';
+import { component$ } from '@qwik.dev/core';
 import clsx from 'clsx';
 import { InputErrors } from './InputErrors';
 
-type CheckboxProps = {
+interface CheckboxProps extends FieldElementProps {
   class?: string;
-  name: string;
   label?: string;
   value?: string;
   input: ReadonlySignal<boolean | undefined>;
   required?: boolean;
   errors: ReadonlySignal<[string, ...string[]] | null>;
-  ref: QRL<(element: HTMLInputElement) => void>;
-  onFocus$: QRL<(event: FocusEvent, element: HTMLInputElement) => void>;
-  onInput$: QRL<(event: InputEvent, element: HTMLInputElement) => void>;
-  onChange$: QRL<(event: Event, element: HTMLInputElement) => void>;
-  onBlur$: QRL<(event: FocusEvent, element: HTMLInputElement) => void>;
-};
+}
 
 /**
  * Checkbox that allows users to select an option. The label next to the

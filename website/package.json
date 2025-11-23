@@ -62,6 +62,7 @@
   },
   "dependencies": {
     "@vercel/og": "^0.6.5",
+    "@formisch/qwik": "workspace:*",
     "clsx": "^2.1.1",
     "satori-html": "^0.3.2",
     "valibot": "^1.1.0"

@@ -1,23 +1,18 @@
+import type { FieldElementProps } from '@formisch/solid';
 import clsx from 'clsx';
-import { createMemo, JSX, splitProps } from 'solid-js';
+import { createMemo, splitProps } from 'solid-js';
 import { InputErrors } from './InputErrors';
 import { InputLabel } from './InputLabel';
 
-type TextInputProps = {
+interface TextInputProps extends FieldElementProps {
   class?: string;
-  name: string;
   type: 'text' | 'email' | 'tel' | 'password' | 'url' | 'number' | 'date';
   label?: string;
   placeholder?: string;
   required?: boolean;
   input: string | number | undefined;
   errors: [string, ...string[]] | null;
-  ref: (element: HTMLInputElement) => void;
-  onFocus: JSX.EventHandler<HTMLInputElement, FocusEvent>;
-  onInput: JSX.EventHandler<HTMLInputElement, InputEvent>;
-  onChange: JSX.EventHandler<HTMLInputElement, Event>;
-  onBlur: JSX.EventHandler<HTMLInputElement, FocusEvent>;
-};
+}
 
 /**
  * Text input field that users can type into. Various decorations can be

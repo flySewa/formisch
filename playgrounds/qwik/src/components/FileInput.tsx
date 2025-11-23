@@ -1,29 +1,19 @@
 /* eslint-disable qwik/valid-lexical-scope */
-import {
-  component$,
-  type QRL,
-  ReadonlySignal,
-  useComputed$,
-} from '@qwik.dev/core';
+import type { FieldElementProps } from '@formisch/qwik';
+import { component$, ReadonlySignal, useComputed$ } from '@qwik.dev/core';
 import clsx from 'clsx';
 import { InputErrors } from './InputErrors';
 import { InputLabel } from './InputLabel';
 
-type FileInputProps = {
+interface FileInputProps extends FieldElementProps {
   class?: string;
-  name: string;
   label?: string;
   accept?: string;
   required?: boolean;
   multiple?: boolean;
   input: ReadonlySignal<File | File[] | null | undefined>;
   errors: ReadonlySignal<[string, ...string[]] | null>;
-  ref: QRL<(element: HTMLInputElement) => void>;
-  onFocus$: QRL<(event: FocusEvent, element: HTMLInputElement) => void>;
-  onInput$: QRL<(event: InputEvent, element: HTMLInputElement) => void>;
-  onChange$: QRL<(event: Event, element: HTMLInputElement) => void>;
-  onBlur$: QRL<(event: FocusEvent, element: HTMLInputElement) => void>;
-};
+}
 
 /**
  * File input field that users can click or drag files into. Various

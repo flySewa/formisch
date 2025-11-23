@@ -1,11 +1,11 @@
+import type { FieldElementProps } from '@formisch/solid';
 import clsx from 'clsx';
-import { JSX, splitProps } from 'solid-js';
+import { splitProps } from 'solid-js';
 import { InputErrors } from './InputErrors';
 import { InputLabel } from './InputLabel';
 
-type SliderProps = {
+interface SliderProps extends FieldElementProps {
   class?: string;
-  name: string;
   label?: string;
   min?: number;
   max?: number;
@@ -13,12 +13,7 @@ type SliderProps = {
   required?: boolean;
   input: string | number | undefined;
   errors: [string, ...string[]] | null;
-  ref: (element: HTMLInputElement) => void;
-  onFocus: JSX.EventHandler<HTMLInputElement, FocusEvent>;
-  onInput: JSX.EventHandler<HTMLInputElement, InputEvent>;
-  onChange: JSX.EventHandler<HTMLInputElement, Event>;
-  onBlur: JSX.EventHandler<HTMLInputElement, FocusEvent>;
-};
+}
 
 /**
  * Range slider that allows users to select predefined numbers. Various

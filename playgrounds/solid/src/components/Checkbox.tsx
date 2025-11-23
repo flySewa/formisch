@@ -1,32 +1,34 @@
+import type { FieldElementProps } from '@formisch/solid';
 import clsx from 'clsx';
-import { JSX, Show } from 'solid-js';
+import { Show, splitProps } from 'solid-js';
 import { InputErrors } from './InputErrors';
 
-type CheckboxProps = {
+interface CheckboxProps extends FieldElementProps {
   class?: string;
-  name: string;
   label?: string;
   value?: string;
   input: boolean | undefined;
   required?: boolean;
   errors: [string, ...string[]] | null;
-  ref: (element: HTMLInputElement) => void;
-  onFocus: JSX.EventHandler<HTMLInputElement, FocusEvent>;
-  onInput: JSX.EventHandler<HTMLInputElement, InputEvent>;
-  onChange: JSX.EventHandler<HTMLInputElement, Event>;
-  onBlur: JSX.EventHandler<HTMLInputElement, FocusEvent>;
-};
+}
 
 /**
  * Checkbox that allows users to select an option. The label next to the
  * checkbox describes the selection option.
  */
 export function Checkbox(props: CheckboxProps) {
+  const [, inputProps] = splitProps(props, [
+    'class',
+    'label',
+    'input',
+    'errors',
+  ]);
+
   return (
     <div class={clsx('px-8 lg:px-10', props.class)}>
-      <label class="flex select-none space-x-4 font-medium md:text-lg lg:text-xl">
+      <label class="flex space-x-4 font-medium select-none md:text-lg lg:text-xl">
         <input
-          {...props}
+          {...inputProps}
           class="mt-1 h-4 w-4 cursor-pointer lg:mt-1 lg:h-5 lg:w-5"
           type="checkbox"
           id={props.name}

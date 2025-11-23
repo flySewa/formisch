@@ -1,25 +1,19 @@
+import type { FieldElementProps } from '@formisch/preact';
 import { ReadonlySignal, useSignal, useSignalEffect } from '@preact/signals';
 import clsx from 'clsx';
-import type { JSX } from 'preact';
 import { forwardRef } from 'preact/compat';
 import { InputErrors } from './InputErrors';
 import { InputLabel } from './InputLabel';
 
-type TextInputProps = {
+interface TextInputProps extends FieldElementProps {
   class?: string;
-  name: string;
   type: 'text' | 'email' | 'tel' | 'password' | 'url' | 'number' | 'date';
   label?: string;
   placeholder?: string;
   required?: boolean;
   input: ReadonlySignal<string | number | undefined>;
   errors: ReadonlySignal<[string, ...string[]] | null>;
-  ref: (element: HTMLInputElement) => void;
-  onFocus: JSX.FocusEventHandler<HTMLInputElement>;
-  onInput: JSX.InputEventHandler<HTMLInputElement>;
-  onChange: JSX.GenericEventHandler<HTMLInputElement>;
-  onBlur: JSX.FocusEventHandler<HTMLInputElement>;
-};
+}
 
 /**
  * Text input field that users can type into. Various decorations can be

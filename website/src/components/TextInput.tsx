@@ -1,6 +1,6 @@
+import type { FieldElementProps } from '@formisch/qwik';
 import {
   component$,
-  type QRL,
   type ReadonlySignal,
   useSignal,
   useTask$,
@@ -9,21 +9,15 @@ import clsx from 'clsx';
 import { InputErrors } from './InputErrors';
 import { InputLabel } from './InputLabel';
 
-type TextInputProps = {
+interface TextInputProps extends FieldElementProps {
   class?: string;
-  name: string;
   type: 'text' | 'email' | 'tel' | 'password' | 'url' | 'number' | 'date';
   label?: string;
   placeholder?: string;
   required?: boolean;
   input: ReadonlySignal<string | number | undefined>;
   errors: ReadonlySignal<[string, ...string[]] | null>;
-  ref: QRL<(element: HTMLInputElement) => void>;
-  onFocus$: QRL<(event: FocusEvent, element: HTMLInputElement) => void>;
-  onInput$: QRL<(event: InputEvent, element: HTMLInputElement) => void>;
-  onChange$: QRL<(event: Event, element: HTMLInputElement) => void>;
-  onBlur$: QRL<(event: FocusEvent, element: HTMLInputElement) => void>;
-};
+}
 
 /**
  * Text input field that users can type into. Various decorations can be

@@ -1,23 +1,18 @@
+import type { FieldElementProps } from '@formisch/solid';
 import clsx from 'clsx';
-import { createMemo, JSX } from 'solid-js';
+import { createMemo, splitProps } from 'solid-js';
 import { InputErrors } from './InputErrors';
 import { InputLabel } from './InputLabel';
 
-type FileInputProps = {
+interface FileInputProps extends FieldElementProps {
   class?: string;
-  name: string;
   label?: string;
   accept?: string;
   required?: boolean;
   multiple?: boolean;
   input: File | File[] | null | undefined;
   errors: [string, ...string[]] | null;
-  ref: (element: HTMLInputElement) => void;
-  onFocus: JSX.EventHandler<HTMLInputElement, FocusEvent>;
-  onInput: JSX.EventHandler<HTMLInputElement, InputEvent>;
-  onChange: JSX.EventHandler<HTMLInputElement, Event>;
-  onBlur: JSX.EventHandler<HTMLInputElement, FocusEvent>;
-};
+}
 
 /**
  * File input field that users can click or drag files into. Various
@@ -25,6 +20,13 @@ type FileInputProps = {
  * requirements.
  */
 export function FileInput(props: FileInputProps) {
+  const [, inputProps] = splitProps(props, [
+    'class',
+    'input',
+    'label',
+    'errors',
+  ]);
+
   // Create memoized value of selected files
   const getFiles = createMemo(() =>
     props.input
@@ -53,7 +55,7 @@ export function FileInput(props: FileInputProps) {
               .join(', ')}`
           : `Click or drag and drop file${props.multiple ? 's' : ''}`}
         <input
-          {...props}
+          {...inputProps}
           class="absolute h-full w-full cursor-pointer opacity-0"
           type="file"
           id={props.name}

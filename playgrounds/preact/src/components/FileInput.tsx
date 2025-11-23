@@ -1,25 +1,19 @@
+import type { FieldElementProps } from '@formisch/preact';
 import { type ReadonlySignal, useComputed } from '@preact/signals';
 import clsx from 'clsx';
-import type { JSX } from 'preact';
 import { forwardRef } from 'preact/compat';
 import { InputErrors } from './InputErrors';
 import { InputLabel } from './InputLabel';
 
-type FileInputProps = {
+interface FileInputProps extends FieldElementProps {
   class?: string;
-  name: string;
   label?: string;
   accept?: string;
   required?: boolean;
   multiple?: boolean;
   input: ReadonlySignal<File | File[] | null | undefined>;
   errors: ReadonlySignal<[string, ...string[]] | null>;
-  ref: (element: HTMLInputElement) => void;
-  onFocus: JSX.FocusEventHandler<HTMLInputElement>;
-  onInput: JSX.InputEventHandler<HTMLInputElement>;
-  onChange: JSX.GenericEventHandler<HTMLInputElement>;
-  onBlur: JSX.FocusEventHandler<HTMLInputElement>;
-};
+}
 
 /**
  * File input field that users can click or drag files into. Various
