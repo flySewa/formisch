@@ -17,6 +17,11 @@ export default defineConfigWithVueTs(
   {
     name: 'app/files-to-lint',
     files: ['**/*.{ts,mts,tsx,vue}'],
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     rules: {
       'vue/multi-word-component-names': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
