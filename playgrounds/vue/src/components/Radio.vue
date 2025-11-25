@@ -13,7 +13,7 @@ interface RadioProps {
 }
 
 const props = defineProps<RadioProps>();
-const model = defineModel<string[] | boolean | undefined>({ required: true });
+const model = defineModel<string | undefined>({ required: true });
 
 const checked = computed(() => {
   return model.value === props.value;

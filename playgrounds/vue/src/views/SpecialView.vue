@@ -129,7 +129,6 @@ const specialForm = useForm({
             :props="field.props"
             :label="label"
             :value="value"
-            :input="field.input === value"
             :errors="field.errors"
           />
         </Field>
