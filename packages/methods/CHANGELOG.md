@@ -2,7 +2,7 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v0.5.1 (November 28, 2025)
 
 - Fix return type of `handleSubmit` method to return a function that returns a Promise (issue #41)
 
