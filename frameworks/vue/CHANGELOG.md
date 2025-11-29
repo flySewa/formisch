@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## v0.6.3 (November 29, 2025)
+
+- Fix build output extensions to match package.json exports
+
 ## v0.6.2 (November 29, 2025)
 
 - Change `@formisch/core` to v0.4.3
