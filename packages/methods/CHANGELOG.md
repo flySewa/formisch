@@ -2,9 +2,14 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v0.5.1 (November 28, 2025)
+
+- Fix return type of `handleSubmit` method to return a function that returns a Promise (issue #41)
+
+## v0.5.0 (November 25, 2025)
 
 - Add support for returning error messages of normal objects in `handleSubmit` method (pull request #11)
+- Fix `isDirty` in `reset` to handle `null` like `undefined` for empty string and `NaN` comparisons (pull request #40)
 
 ## v0.4.1 (October 31, 2025)
 

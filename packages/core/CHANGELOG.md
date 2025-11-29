@@ -6,6 +6,10 @@ All notable changes to the library will be documented in this file.
 
 - Fix radio button value handling in `getElementInput` (pull request #39)
 
+## v0.4.2 (November 25, 2025)
+
+- Fix `isDirty` to handle `null` like `undefined` for empty string and `NaN` comparisons (pull request #40)
+
 ## v0.4.1 (October 27, 2025)
 
 - Fix bug when setting array input with more array items than previous state (pull request #29)
