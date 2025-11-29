@@ -83,7 +83,7 @@ const specialForm = useForm({
           v-slot="field"
         >
           <Checkbox
-            class="!p-0"
+            class="p-0!"
             v-model="field.input"
             :props="field.props"
             :label="label"
@@ -124,7 +124,7 @@ const specialForm = useForm({
           v-slot="field"
         >
           <Radio
-            class="!p-0"
+            class="p-0!"
             v-model="field.input"
             :props="field.props"
             :label="label"

@@ -86,7 +86,7 @@ export default function SpecialPage() {
                   {(field) => (
                     <Checkbox
                       {...field.props}
-                      class="!p-0"
+                      class="p-0!"
                       label={label}
                       value={value}
                       input={field.input.includes(value)}
@@ -126,7 +126,7 @@ export default function SpecialPage() {
                   {(field) => (
                     <Radio
                       {...field.props}
-                      class="!p-0"
+                      class="p-0!"
                       label={label}
                       value={value}
                       input={field.input === value}

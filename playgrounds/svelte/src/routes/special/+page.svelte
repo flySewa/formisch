@@ -79,7 +79,7 @@
           <Field of={specialForm} path={['checkbox', 'array']}>
             {#snippet children(field)}
               <Checkbox
-                class="!p-0"
+                class="p-0!"
                 {...field.props}
                 {label}
                 {value}
@@ -115,7 +115,7 @@
           <Field of={specialForm} path={['radio']}>
             {#snippet children(field)}
               <Radio
-                class="!p-0"
+                class="p-0!"
                 {...field.props}
                 {label}
                 {value}

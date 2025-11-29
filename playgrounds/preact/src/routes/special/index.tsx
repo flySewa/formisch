@@ -80,7 +80,7 @@ export default function Page() {
               {(field) => (
                 <Checkbox
                   {...field.props}
-                  class="!p-0"
+                  class="p-0!"
                   label={label}
                   value={value}
                   input={computed(() => field.input.value.includes(value))}
@@ -116,7 +116,7 @@ export default function Page() {
               {(field) => (
                 <Radio
                   {...field.props}
-                  class="!p-0"
+                  class="p-0!"
                   label={label}
                   value={value}
                   input={computed(() => field.input.value === value)}

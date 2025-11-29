@@ -88,7 +88,7 @@ export default component$(() => {
               render$={(field) => (
                 <Checkbox
                   {...field.props}
-                  class="!p-0"
+                  class="p-0!"
                   label={label}
                   value={value}
                   input={createComputed$(() =>
@@ -131,7 +131,7 @@ export default component$(() => {
               render$={(field) => (
                 <Radio
                   {...field.props}
-                  class="!p-0"
+                  class="p-0!"
                   label={label}
                   value={value}
                   input={createComputed$(() => field.input.value === value)}
