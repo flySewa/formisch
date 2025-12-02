@@ -17,9 +17,14 @@ export function createId(): string {
 }
 
 /**
- * Listener function type.
+ * Listener tuple.
+ *
+ * Hint: The first element is the execute function, which notifies the listener
+ * about updates. The second element is the subscription set, which keeps track
+ * of where the listener is subscribed and is used to clean up subscriptions if
+ * they are no longer needed.
  */
-export type Listener = () => void;
+export type Listener = [() => void, Set<Set<Listener>>];
 
 /**
  * The current listener being tracked.
@@ -45,20 +50,25 @@ export function createSignal<T>(value: T): Signal<T> {
     get value() {
       if (listener) {
         subscribers.add(listener);
+        listener[1].add(subscribers);
       }
       return value;
     },
     set value(newValue: T) {
       if (newValue !== value) {
         value = newValue;
-        if (batchSubscribers) {
-          for (const subscriber of subscribers) {
+        const localSubscribers: Listener[] = [];
+        for (const subscriber of subscribers) {
+          if (batchSubscribers) {
             batchSubscribers.add(subscriber);
+          } else {
+            localSubscribers.push(subscriber);
           }
-        } else {
-          for (const subscriber of subscribers) {
-            subscriber();
-          }
+          subscriber[1].delete(subscribers);
+        }
+        subscribers.clear();
+        for (const subscriber of localSubscribers) {
+          subscriber[0]();
         }
       }
     },
@@ -88,7 +98,7 @@ export function batch<T>(fn: () => T): T {
       const subscribers = batchSubscribers;
       batchSubscribers = undefined;
       for (const subscriber of subscribers) {
-        subscriber();
+        subscriber[0]();
       }
     }
   }
