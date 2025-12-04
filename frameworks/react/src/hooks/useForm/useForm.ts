@@ -29,7 +29,7 @@ export function useForm(config: FormConfig): FormStore {
 
   const internalFormStore = useMemo(
     () =>
-      createFormStore(config, (input: unknown) =>
+      createFormStore(config, (input) =>
         v.safeParseAsync(config.schema, input)
       ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,29 +43,31 @@ export function useForm(config: FormConfig): FormStore {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // TODO: Check if we can use `useMemo` here
-  return {
-    [INTERNAL]: internalFormStore,
-    get isSubmitting() {
-      return internalFormStore.isSubmitting.value;
-    },
-    get isSubmitted() {
-      return internalFormStore.isSubmitted.value;
-    },
-    get isValidating() {
-      return internalFormStore.isValidating.value;
-    },
-    get isTouched() {
-      return getFieldBool(internalFormStore, 'isTouched');
-    },
-    get isDirty() {
-      return getFieldBool(internalFormStore, 'isDirty');
-    },
-    get isValid() {
-      return !getFieldBool(internalFormStore, 'errors');
-    },
-    get errors() {
-      return internalFormStore.errors.value;
-    },
-  };
+  return useMemo(
+    () => ({
+      [INTERNAL]: internalFormStore,
+      get isSubmitting() {
+        return internalFormStore.isSubmitting.value;
+      },
+      get isSubmitted() {
+        return internalFormStore.isSubmitted.value;
+      },
+      get isValidating() {
+        return internalFormStore.isValidating.value;
+      },
+      get isTouched() {
+        return getFieldBool(internalFormStore, 'isTouched');
+      },
+      get isDirty() {
+        return getFieldBool(internalFormStore, 'isDirty');
+      },
+      get isValid() {
+        return !getFieldBool(internalFormStore, 'errors');
+      },
+      get errors() {
+        return internalFormStore.errors.value;
+      },
+    }),
+    [internalFormStore]
+  );
 }

@@ -7,6 +7,7 @@ import {
   type Schema,
   type ValidArrayPath,
 } from '@formisch/core/vanilla';
+import { useMemo } from 'react';
 import type * as v from 'valibot';
 import type { FieldArrayStore, FormStore } from '../../types/index.ts';
 import { useSignals } from '../useSignals/index.ts';
@@ -53,23 +54,26 @@ export function useFieldArray(
     config.path
   ) as InternalArrayStore;
 
-  // TODO: Check if we can use `useMemo` here
-  return {
-    path: config.path,
-    get items() {
-      return internalFieldStore.items.value;
-    },
-    get errors() {
-      return internalFieldStore.errors.value;
-    },
-    get isTouched() {
-      return getFieldBool(internalFieldStore, 'isTouched');
-    },
-    get isDirty() {
-      return getFieldBool(internalFieldStore, 'isDirty');
-    },
-    get isValid() {
-      return !getFieldBool(internalFieldStore, 'errors');
-    },
-  };
+  return useMemo(
+    () => ({
+      path: config.path,
+      get items() {
+        return internalFieldStore.items.value;
+      },
+      get errors() {
+        return internalFieldStore.errors.value;
+      },
+      get isTouched() {
+        return getFieldBool(internalFieldStore, 'isTouched');
+      },
+      get isDirty() {
+        return getFieldBool(internalFieldStore, 'isDirty');
+      },
+      get isValid() {
+        return !getFieldBool(internalFieldStore, 'errors');
+      },
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [internalFormStore, internalFieldStore]
+  );
 }

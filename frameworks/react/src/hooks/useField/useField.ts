@@ -11,7 +11,7 @@ import {
   validateIfRequired,
   type ValidPath,
 } from '@formisch/core/vanilla';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import type * as v from 'valibot';
 import type { FieldStore, FormStore } from '../../types/index.ts';
 import { useSignals } from '../useSignals/index.ts';
@@ -60,49 +60,51 @@ export function useField(form: FormStore, config: UseFieldConfig): FieldStore {
     };
   }, [internalFieldStore]);
 
-  // TODO: Check if we can use `useMemo` here
-  return {
-    path: config.path,
-    get input() {
-      return getFieldInput(internalFieldStore);
-    },
-    get errors() {
-      return internalFieldStore.errors.value;
-    },
-    get isTouched() {
-      return getFieldBool(internalFieldStore, 'isTouched');
-    },
-    get isDirty() {
-      return getFieldBool(internalFieldStore, 'isDirty');
-    },
-    get isValid() {
-      return !getFieldBool(internalFieldStore, 'errors');
-    },
-    props: {
-      name: internalFieldStore.name,
-      autoFocus: !!internalFieldStore.errors.value,
-      ref(element) {
-        // TODO: Do we need the if check in React?
-        if (element) {
-          internalFieldStore.elements.push(element);
-        }
+  return useMemo(
+    () => ({
+      path: config.path,
+      get input() {
+        return getFieldInput(internalFieldStore);
       },
-      onFocus() {
-        setFieldBool(internalFieldStore, 'isTouched', true);
-        validateIfRequired(internalFormStore, internalFieldStore, 'touch');
+      get errors() {
+        return internalFieldStore.errors.value;
       },
-      onChange(event) {
-        setFieldInput(
-          internalFormStore,
-          config.path,
-          getElementInput(event.currentTarget, internalFieldStore)
-        );
-        validateIfRequired(internalFormStore, internalFieldStore, 'input');
-        validateIfRequired(internalFormStore, internalFieldStore, 'change');
+      get isTouched() {
+        return getFieldBool(internalFieldStore, 'isTouched');
       },
-      onBlur() {
-        validateIfRequired(internalFormStore, internalFieldStore, 'blur');
+      get isDirty() {
+        return getFieldBool(internalFieldStore, 'isDirty');
       },
-    },
-  };
+      get isValid() {
+        return !getFieldBool(internalFieldStore, 'errors');
+      },
+      props: {
+        name: internalFieldStore.name,
+        autoFocus: !!internalFieldStore.errors.value,
+        ref(element) {
+          if (element) {
+            internalFieldStore.elements.push(element);
+          }
+        },
+        onFocus() {
+          setFieldBool(internalFieldStore, 'isTouched', true);
+          validateIfRequired(internalFormStore, internalFieldStore, 'touch');
+        },
+        onChange(event) {
+          setFieldInput(
+            internalFormStore,
+            config.path,
+            getElementInput(event.currentTarget, internalFieldStore)
+          );
+          validateIfRequired(internalFormStore, internalFieldStore, 'input');
+          validateIfRequired(internalFormStore, internalFieldStore, 'change');
+        },
+        onBlur() {
+          validateIfRequired(internalFormStore, internalFieldStore, 'blur');
+        },
+      },
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [internalFormStore, internalFieldStore]
+  );
 }
