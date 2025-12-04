@@ -55,6 +55,7 @@ export const onGet: RequestHandler = async ({ cacheControl, send, url }) => {
   if (title) {
     send(
       new ImageResponse(
+        // @ts-expect-error
         html`
           <div
             tw="flex h-full w-full flex-col justify-between bg-gray-900 p-16"
@@ -109,6 +110,7 @@ export const onGet: RequestHandler = async ({ cacheControl, send, url }) => {
   } else {
     send(
       new ImageResponse(
+        // @ts-expect-error
         html`
           <div
             tw="flex h-full w-full items-center justify-center bg-gray-900"
