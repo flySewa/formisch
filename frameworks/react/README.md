@@ -1,8 +1,8 @@
-# Formisch for SolidJS
+# Formisch for React
 
-Formisch is a schema-based, headless form library for SolidJS. It manages form state and validation. It is type-safe, fast by default and its bundle size is small due to its modular design. Try it out in our [playground](https://stackblitz.com/edit/formisch-playground-solid)!
+Formisch is a schema-based, headless form library for React. It manages form state and validation. It is type-safe, fast by default and its bundle size is small due to its modular design. Try it out in our [playground](https://stackblitz.com/edit/formisch-playground-react)!
 
-Formisch is also available for [Preact][formisch-preact], [Qwik][formisch-qwik], [React][formisch-react], [Svelte][formisch-svelte] and [Vue][formisch-vue].
+Formisch is also available for [Preact][formisch-preact], [Qwik][formisch-qwik], [SolidJS][formisch-solid], [Svelte][formisch-svelte] and [Vue][formisch-vue].
 
 ## Highlights
 
@@ -15,10 +15,10 @@ Formisch is also available for [Preact][formisch-preact], [Qwik][formisch-qwik],
 
 ## Example
 
-Every form starts with the `createForm` primitive. It initializes your form's store based on the provided Valibot schema and infers its types. Next, wrap your form in the `<Form />` component. It's a thin layer around the native `<form />` element that handles form validation and submission. Then, you can access the state of a field with the `useField` primitive or the `<Field />` component to connect your inputs.
+Every form starts with the `useForm` hook. It initializes your form's store based on the provided Valibot schema and infers its types. Next, wrap your form in the `<Form />` component. It's a thin layer around the native `<form />` element that handles form validation and submission. Then, you can access the state of a field with the `useField` hook or the `<Field />` component to connect your inputs.
 
 ```tsx
-import { createForm, Field, Form } from '@formisch/solid';
+import { Field, Form, useForm } from '@formisch/react';
 import * as v from 'valibot';
 
 const LoginSchema = v.object({
@@ -27,7 +27,7 @@ const LoginSchema = v.object({
 });
 
 export default function LoginPage() {
-  const loginForm = createForm({
+  const loginForm = useForm({
     schema: LoginSchema,
   });
 
@@ -77,6 +77,6 @@ This project is available free of charge and licensed under the [MIT license](ht
 
 [formisch-preact]: https://github.com/open-circle/formisch/tree/main/frameworks/preact
 [formisch-qwik]: https://github.com/open-circle/formisch/tree/main/frameworks/qwik
-[formisch-react]: https://github.com/open-circle/formisch/tree/main/frameworks/react
+[formisch-solid]: https://github.com/open-circle/formisch/tree/main/frameworks/solid
 [formisch-svelte]: https://github.com/open-circle/formisch/tree/main/frameworks/svelte
 [formisch-vue]: https://github.com/open-circle/formisch/tree/main/frameworks/vue
