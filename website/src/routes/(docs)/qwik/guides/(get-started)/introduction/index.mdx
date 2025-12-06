@@ -25,7 +25,7 @@ Formisch is a schema-based, headless form library for Qwik. It manages form stat
 
 ## Example
 
-Every form starts with the <Link href="/qwik/api/useForm/">`useForm$`</Link> hook. It initializes your form's store based on the provided Valibot schema and infers its types. Next, wrap your form in the <Link href="/qwik/api/Form/">`<Form />`</Link> component. It's a thin layer around the native `<form />` element that handles form validation and submission. Then, you can access the state of a field with the <Link href="/qwik/api/useField/">`useField$`</Link> hook or the <Link href="/qwik/api/Field/">`<Field />`</Link> component to connect your inputs.
+Every form starts with the <Link href="/qwik/api/useForm$/">`useForm$`</Link> hook. It initializes your form's store based on the provided Valibot schema and infers its types. Next, wrap your form in the <Link href="/qwik/api/Form/">`<Form />`</Link> component. It's a thin layer around the native `<form />` element that handles form validation and submission. Then, you can access the state of a field with the <Link href="/qwik/api/useField/">`useField$`</Link> hook or the <Link href="/qwik/api/Field/">`<Field />`</Link> component to connect your inputs.
 
 ```tsx
 import { Field, Form, useForm$ } from '@formisch/qwik';
