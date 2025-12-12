@@ -87,7 +87,7 @@ export function initializeFieldStore(
     initializeFieldStore(
       internalFieldStore,
       schema.wrapped,
-      initialInput ?? v.getDefault(schema),
+      initialInput === undefined ? v.getDefault(schema) : initialInput,
       path,
       true
     );
