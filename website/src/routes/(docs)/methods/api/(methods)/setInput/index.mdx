@@ -32,6 +32,8 @@ setInput<TSchema, TFieldPath>(form, config);
 
 The `form` parameter is the form store to set input on. The `config` parameter specifies the path to the field and the new input values to set.
 
+> If you need to update the form because the initial data has changed (e.g., remote data was refreshed), use <Link href="../reset/">`reset`</Link> instead of `setInput`. The `reset` method properly reinitializes the form state, while `setInput` only changes the current input values without updating the initial state.
+
 ## Related
 
 ### Primitives

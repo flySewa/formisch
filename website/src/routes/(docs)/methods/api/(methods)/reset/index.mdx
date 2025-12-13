@@ -1,6 +1,6 @@
 ---
 title: reset
-description: Resets the form or a specific field to its initial state.
+description: Resets the form or a specific field to its initial state or to a new initial input.
 source: /packages/methods/src/reset/reset.ts
 contributors:
   - fabian-hiller
@@ -11,7 +11,7 @@ import { properties } from './properties';
 
 # reset
 
-Resets the form or a specific field to its initial state. Optionally keeps certain states like input values, touched state, or errors.
+Resets the form or a specific field to its initial state or to a new initial input. Optionally keeps certain states like input values, touched state, or errors.
 
 ```ts
 reset(form);
@@ -30,7 +30,9 @@ reset<TSchema, TFieldPath>(form, config);
 
 ### Explanation
 
-The `form` parameter is the form store to reset. The optional `config` parameter specifies which field to reset (or the entire form if omitted) and which states to preserve during the reset.
+When called without a config or with `path` set to `undefined`, the entire form is reset. When a `path` is provided, only that specific field and its nested fields are reset.
+
+By default, the form resets to its original initial input. However, you can pass a new `initialInput` in the config to update the form's baseline data. This is useful when remote data has changed and the form needs to reflect the updated values. Combined with `keepInput`, `keepTouched`, `keepErrors`, and `keepSubmitted`, you can update the initial state without overwriting the user's current edits.
 
 ## Related
 
