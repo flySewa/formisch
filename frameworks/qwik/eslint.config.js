@@ -6,12 +6,16 @@ import {
 import { qwikEslint9Plugin } from 'eslint-plugin-qwik';
 import globals from 'globals';
 
+const sourceConfig = createSourceConfig({
+  tsconfigRootDir: import.meta.dirname,
+});
+
 export default tseslint.config(
   { ignores: ['eslint.config.js', 'dist', 'server'] },
   ...baseConfigs,
   qwikEslint9Plugin.configs.recommended,
   {
-    ...createSourceConfig({ tsconfigRootDir: import.meta.dirname }),
+    ...sourceConfig,
     languageOptions: {
       globals: {
         ...globals.browser,
@@ -19,7 +23,7 @@ export default tseslint.config(
         ...globals.es2021,
         ...globals.serviceworker,
       },
-      parserOptions: createSourceConfig().languageOptions.parserOptions,
+      parserOptions: sourceConfig.languageOptions.parserOptions,
     },
   }
 );
