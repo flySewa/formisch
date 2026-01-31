@@ -63,7 +63,7 @@ Each method has its own folder: `name.ts`, `index.ts`.
 ## Changelog Format
 
 - Use `## vX.X.X (Month DD, YYYY)` for version headings
-- For unreleased changes use the liternal `## vX.X.X (Month DD, YYYY)` as a placeholder
+- For unreleased changes use the literal `## vX.X.X (Month DD, YYYY)` as a placeholder
 
 ## Agent Skills
 
