@@ -2,7 +2,7 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v0.6.0 (January 31, 2026)
 
 - Add React-specific `handleSubmit` method using `FormEvent` type from React
 - Add React-specific `setInput` method with change event validation
