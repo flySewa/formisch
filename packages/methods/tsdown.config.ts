@@ -17,8 +17,8 @@ function rewriteFrameworkImports(framework: Framework): RolldownPluginOption {
     // Also transform .d.ts imports to framework-specific files
     transform(code, id) {
       let modifiedCode = code.replace(
-        '@formisch/core',
-        `@formisch/core/${framework}`
+        /(["'])@formisch\/core\1/g,
+        `$1@formisch/core/${framework}$1`
       );
 
       // Transform imports of `.d.ts` files to framework-specific files
@@ -32,7 +32,7 @@ function rewriteFrameworkImports(framework: Framework): RolldownPluginOption {
           // Create path to framework-specific file
           const frameworkFilePath = `/${join(
             ...id.split('/').slice(0, -1),
-            `${filePath}.${framework}.ts`
+            filePath.replace('.ts', `.${framework}.ts`)
           )}`;
 
           // If framework-specific file exists, rewrite import

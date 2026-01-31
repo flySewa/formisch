@@ -2,7 +2,7 @@ import {
   type BaseFormStore,
   type Schema,
   type SubmitHandler,
-} from '@formisch/core';
+} from '@formisch/core/react';
 import type { FormEvent } from 'react';
 import { handleSubmit as baseHandleSubmit } from './handleSubmit.ts';
 
