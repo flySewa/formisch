@@ -2,7 +2,7 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v0.5.0 (January 31, 2026)
 
 - Add React-specific `SubmitHandler` type using `FormEvent` type from React
 - Rename `vanilla` build target in favor of dedicated `react` target
