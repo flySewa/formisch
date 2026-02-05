@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (February 05, 2026)
+
+- Split submit handler types into `SubmitHandler` (no event) and `SubmitEventHandler` (with event)
+
 ## v0.5.0 (January 31, 2026)
 
 - Add React-specific `SubmitHandler` type using `FormEvent` type from React

@@ -2,6 +2,12 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (February 05, 2026)
+
+- Change `@formisch/core` to vX.X.X
+- Change `@formisch/methods` to vX.X.X
+- Change `Form` component typing to use `SubmitEventHandler`
+
 ## v0.6.0 (January 31, 2026)
 
 - Add `onInput` method to `FieldStore` for programmatic input value setting

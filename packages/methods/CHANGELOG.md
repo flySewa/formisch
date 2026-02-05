@@ -2,6 +2,10 @@
 
 All notable changes to the library will be documented in this file.
 
+## vX.X.X (February 05, 2026)
+
+- Align `handleSubmit` overloads with separate `SubmitHandler` and `SubmitEventHandler` types
+
 ## v0.6.0 (January 31, 2026)
 
 - Add React-specific `handleSubmit` method using `FormEvent` type from React
