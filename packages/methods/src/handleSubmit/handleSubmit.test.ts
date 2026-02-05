@@ -1,4 +1,5 @@
 // @vitest-environment jsdom
+import type { SubmitEventHandler, SubmitHandler } from '@formisch/core';
 import * as v from 'valibot';
 import { describe, expect, test, vi } from 'vitest';
 import { createTestStore } from '../vitest/index.ts';
@@ -9,7 +10,7 @@ describe('handleSubmit', () => {
     const store = createTestStore(v.object({ name: v.string() }), {
       initialInput: { name: 'John' },
     });
-    const handler = vi.fn();
+    const handler: SubmitEventHandler<typeof store.schema> = vi.fn();
     const event = new SubmitEvent('submit');
     vi.spyOn(event, 'preventDefault');
 
@@ -20,12 +21,24 @@ describe('handleSubmit', () => {
     expect(handler).toHaveBeenCalledWith({ name: 'John' }, event);
   });
 
+  test('should call handler without event when none provided', async () => {
+    const store = createTestStore(v.object({ name: v.string() }), {
+      initialInput: { name: 'John' },
+    });
+    const handler: SubmitHandler<typeof store.schema> = vi.fn();
+
+    const submitHandler = handleSubmit(store, handler) as () => Promise<void>;
+    await submitHandler();
+
+    expect(handler).toHaveBeenCalledWith({ name: 'John' }, undefined);
+  });
+
   test('should set isSubmitting during submission', async () => {
     const store = createTestStore(v.object({ name: v.string() }), {
       initialInput: { name: 'John' },
     });
     let submittingDuringCall = false;
-    const handler = vi.fn(() => {
+    const handler: SubmitEventHandler<typeof store.schema> = vi.fn(() => {
       submittingDuringCall = store.isSubmitting.value;
     });
 
@@ -40,7 +53,7 @@ describe('handleSubmit', () => {
     const store = createTestStore(v.object({ name: v.string() }), {
       initialInput: { name: 'John' },
     });
-    const handler = vi.fn();
+    const handler: SubmitEventHandler<typeof store.schema> = vi.fn();
 
     const submitHandler = handleSubmit(store, handler);
     await submitHandler(new SubmitEvent('submit'));
@@ -70,7 +83,7 @@ describe('handleSubmit', () => {
         },
       ],
     });
-    const handler = vi.fn();
+    const handler: SubmitEventHandler<typeof store.schema> = vi.fn();
 
     const submitHandler = handleSubmit(store, handler);
     await submitHandler(new SubmitEvent('submit'));
@@ -104,7 +117,10 @@ describe('handleSubmit', () => {
     const focusSpy = vi.spyOn(input, 'focus');
     store.children.name.elements = [input];
 
-    const submitHandler = handleSubmit(store, vi.fn());
+    const submitHandler = handleSubmit(
+      store,
+      vi.fn() as SubmitEventHandler<typeof store.schema>
+    );
     await submitHandler(new SubmitEvent('submit'));
 
     expect(focusSpy).toHaveBeenCalledOnce();
@@ -115,7 +131,9 @@ describe('handleSubmit', () => {
       initialInput: { name: 'John' },
     });
     const error = new Error('Submit failed');
-    const handler = vi.fn().mockRejectedValue(error);
+    const handler: SubmitEventHandler<typeof store.schema> = vi
+      .fn()
+      .mockRejectedValue(error);
 
     const submitHandler = handleSubmit(store, handler);
     await submitHandler(new SubmitEvent('submit'));
@@ -127,7 +145,9 @@ describe('handleSubmit', () => {
     const store = createTestStore(v.object({ name: v.string() }), {
       initialInput: { name: 'John' },
     });
-    const handler = vi.fn().mockRejectedValue(new Error('Failed'));
+    const handler: SubmitEventHandler<typeof store.schema> = vi
+      .fn()
+      .mockRejectedValue(new Error('Failed'));
 
     const submitHandler = handleSubmit(store, handler);
     await submitHandler(new SubmitEvent('submit'));
@@ -139,7 +159,9 @@ describe('handleSubmit', () => {
     const store = createTestStore(v.object({ name: v.string() }), {
       initialInput: { name: 'John' },
     });
-    const handler = vi.fn().mockRejectedValue('string error');
+    const handler: SubmitEventHandler<typeof store.schema> = vi
+      .fn()
+      .mockRejectedValue('string error');
 
     const submitHandler = handleSubmit(store, handler);
     await submitHandler(new SubmitEvent('submit'));
@@ -151,7 +173,9 @@ describe('handleSubmit', () => {
     const store = createTestStore(v.object({ name: v.string() }), {
       initialInput: { name: 'John' },
     });
-    const handler = vi.fn().mockResolvedValue(undefined);
+    const handler: SubmitEventHandler<typeof store.schema> = vi
+      .fn()
+      .mockResolvedValue(undefined);
 
     const submitHandler = handleSubmit(store, handler);
     await submitHandler(new SubmitEvent('submit'));
