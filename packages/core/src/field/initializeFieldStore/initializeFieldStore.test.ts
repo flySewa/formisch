@@ -163,6 +163,181 @@ describe('initializeFieldStore', () => {
     });
   });
 
+  describe('nullable/nullish + option schemas', () => {
+    test('should preserve null input for nullable variant', () => {
+      const store = createTestStore(
+        v.object({
+          nest: v.nullable(
+            v.variant('type', [
+              v.object({ type: v.literal('a'), value: v.string() }),
+              v.object({ type: v.literal('b'), count: v.number() }),
+            ])
+          ),
+        }),
+        { initialInput: { nest: null } }
+      );
+      const nestStore = store.children.nest;
+      expect(nestStore.kind).toBe('object');
+      if (nestStore.kind === 'object') {
+        expect(nestStore.input.value).toBeNull();
+      }
+    });
+
+    test('should preserve null input for nullable union', () => {
+      const store = createTestStore(
+        v.object({
+          nest: v.nullable(
+            v.union([v.object({ a: v.string() }), v.object({ b: v.number() })])
+          ),
+        }),
+        { initialInput: { nest: null } }
+      );
+      const nestStore = store.children.nest;
+      expect(nestStore.kind).toBe('object');
+      if (nestStore.kind === 'object') {
+        expect(nestStore.input.value).toBeNull();
+      }
+    });
+
+    test('should preserve null input for nullish variant', () => {
+      const store = createTestStore(
+        v.object({
+          nest: v.nullish(
+            v.variant('type', [
+              v.object({ type: v.literal('a'), value: v.string() }),
+            ])
+          ),
+        }),
+        { initialInput: { nest: null } }
+      );
+      const nestStore = store.children.nest;
+      expect(nestStore.kind).toBe('object');
+      if (nestStore.kind === 'object') {
+        expect(nestStore.input.value).toBeNull();
+      }
+    });
+
+    test('should preserve undefined input for nullish variant', () => {
+      const store = createTestStore(
+        v.object({
+          nest: v.nullish(
+            v.variant('type', [
+              v.object({ type: v.literal('a'), value: v.string() }),
+            ])
+          ),
+        }),
+        { initialInput: { nest: undefined } }
+      );
+      const nestStore = store.children.nest;
+      expect(nestStore.kind).toBe('object');
+      if (nestStore.kind === 'object') {
+        expect(nestStore.input.value).toBeUndefined();
+      }
+    });
+
+    test('should initialize normally for nullable variant with value', () => {
+      const store = createTestStore(
+        v.object({
+          nest: v.nullable(
+            v.variant('type', [
+              v.object({ type: v.literal('a'), value: v.string() }),
+            ])
+          ),
+        }),
+        { initialInput: { nest: { type: 'a', value: 'hello' } } }
+      );
+      const nestStore = store.children.nest;
+      expect(nestStore.kind).toBe('object');
+      if (nestStore.kind === 'object') {
+        expect(nestStore.input.value).toBe(true);
+        expect(nestStore.children.value.input.value).toBe('hello');
+      }
+    });
+
+    test('should preserve null input for nullable intersect', () => {
+      const store = createTestStore(
+        v.object({
+          nest: v.nullable(
+            v.intersect([
+              v.object({ a: v.string() }),
+              v.object({ b: v.number() }),
+            ])
+          ),
+        }),
+        { initialInput: { nest: null } }
+      );
+      const nestStore = store.children.nest;
+      expect(nestStore.kind).toBe('object');
+      if (nestStore.kind === 'object') {
+        expect(nestStore.input.value).toBeNull();
+      }
+    });
+  });
+
+  describe('nullable/nullish + lazy + option schemas', () => {
+    test('should preserve null input for nullable lazy variant', () => {
+      const store = createTestStore(
+        v.object({
+          nest: v.nullable(
+            v.lazy(() =>
+              v.variant('type', [
+                v.object({ type: v.literal('a'), value: v.string() }),
+              ])
+            )
+          ),
+        }),
+        { initialInput: { nest: null } }
+      );
+      const nestStore = store.children.nest;
+      expect(nestStore.kind).toBe('object');
+      if (nestStore.kind === 'object') {
+        expect(nestStore.input.value).toBeNull();
+      }
+    });
+
+    test('should preserve null input for nullable lazy union', () => {
+      const store = createTestStore(
+        v.object({
+          nest: v.nullable(
+            v.lazy(() =>
+              v.union([
+                v.object({ a: v.string() }),
+                v.object({ b: v.number() }),
+              ])
+            )
+          ),
+        }),
+        { initialInput: { nest: null } }
+      );
+      const nestStore = store.children.nest;
+      expect(nestStore.kind).toBe('object');
+      if (nestStore.kind === 'object') {
+        expect(nestStore.input.value).toBeNull();
+      }
+    });
+
+    test('should initialize normally for nullable lazy variant with value', () => {
+      const store = createTestStore(
+        v.object({
+          nest: v.nullable(
+            v.lazy(() =>
+              v.variant('type', [
+                v.object({ type: v.literal('a'), value: v.string() }),
+              ])
+            )
+          ),
+        }),
+        { initialInput: { nest: { type: 'a', value: 'hello' } } }
+      );
+      const nestStore = store.children.nest;
+      expect(nestStore.kind).toBe('object');
+      if (nestStore.kind === 'object') {
+        expect(nestStore.input.value).toBe(true);
+        expect(nestStore.children.value.input.value).toBe('hello');
+      }
+    });
+  });
+
   describe('unsupported schemas', () => {
     test('should throw for record schema', () => {
       expect(() => {

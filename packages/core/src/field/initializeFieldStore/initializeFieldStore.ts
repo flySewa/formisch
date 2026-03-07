@@ -73,7 +73,8 @@ export function initializeFieldStore(
       internalFieldStore,
       schema.getter(undefined),
       initialInput,
-      path
+      path,
+      nullish
     );
 
     // Otherwise, if schema is nullish wrapper, unwrap and initialize
@@ -117,7 +118,8 @@ export function initializeFieldStore(
         internalFieldStore,
         schemaOption,
         initialInput,
-        path
+        path,
+        nullish
       );
     }
 
