@@ -39,7 +39,7 @@ export default component$(() => {
         <div class="mdx flex w-full max-w-(--breakpoint-lg) flex-col lg:self-center">
           <Slot />
 
-          {/* Edit page buttton */}
+          {/* Edit page button */}
           <IconButton
             class="mx-8 lg:mx-10"
             variant="secondary"
