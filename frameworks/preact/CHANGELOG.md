@@ -2,7 +2,7 @@
 
 All notable changes to the library will be documented in this file.
 
-## vX.X.X (Month DD, YYYY)
+## v0.9.4 (March 19, 2026)
 
 - Fix `Form` component submit handler type inference
 
