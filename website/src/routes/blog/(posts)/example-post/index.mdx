@@ -63,7 +63,7 @@ Type maintenance in TanStack Form comes down to keeping your `defaultValues` acc
 
 **Formisch**
 
-Formisch is built on [Valibot](https://valibot.dev), a TypeScript-first validation library similar to Zod. That relationship is what makes its type inference work differently from the other two.
+ForFormisch is built on [Valibot](https://valibot.dev), which is part of Standard Schema, the same spec TanStack Form adopts for runtime validation. That relationship is what makes its type inference work differently from the other two. 
 
 Valibot schemas carry TypeScript type information as part of their construction. When you build a schema, you are simultaneously constructing a runtime validator and a compile-time type description, and these are not two separate things that are kept in sync. They are the same object.
 
@@ -157,6 +157,8 @@ RHF provides mitigations such as memoized callbacks, stable field IDs, and selec
 
 This works, but it means performance depends on how carefully the component tree is structured.
 
+For most production forms, this never becomes a problem. The tradeoff only surfaces at scale.
+
 RHF avoids re-renders by default, but once values enter React state, controlling re-render scope becomes your responsibility.
 
 **TanStack Form**
@@ -182,6 +184,8 @@ The dependency is direct, with no subscription setup, diffing process, or interm
 In practice, the difference between TanStack Form's store and Formisch's signals is small for most web applications. Both provide granular updates and both scale better than RHF once forms become complex.
 
 Signals have a slight efficiency advantage because the dependency graph is more direct and has less overhead. This difference becomes more noticeable in environments like React Native or in very large dynamic forms where many updates occur frequently.
+
+Worth noting: Formisch is framework-agnostic. The same mental model works across React, SolidJS, Vue, Svelte, Preact, and Qwik. That breadth is relevant if your team works across multiple framework environments, or if that changes over time.
 
 For most applications, performance alone is unlikely to be the deciding factor between TanStack Form and Formisch. The more relevant difference is architectural. RHF requires deliberate control of re-render scope. TanStack Form handles it through its store. Formisch handles it at the signal level with minimal overhead.
 
@@ -274,4 +278,4 @@ Migrate one form at a time instead of rewriting everything at once. Start with t
 
 ---
 
-it's less about features and more about where you want the complexity to live. RHF keeps it closer to your components. TanStack Form and Formisch move more of it into the form layer. Which one makes sense depends on how much complexity your forms actually carry. 
+it's less about features and more about where you want the complexity to live. TanStack Form and Formisch move more of it into the form layer and RHF keeps it closer to your components. Which one makes sense depends on how much complexity your forms actually carry. 
