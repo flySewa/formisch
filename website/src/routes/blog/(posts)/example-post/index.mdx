@@ -55,7 +55,7 @@ TanStack Form infers the form's shape from the `defaultValues` you provide when 
 
 There is no generic to pass in separately, because the form already knows its own shape from the values you gave it. If you change the default values, the types change with them.
 
-TanStack Form also supports schema libraries like Zod and Valibot through Standard Schema. You can pass them through the `validators` option for runtime validation. However, the TypeScript types are still inferred from `defaultValues`, not from the schema. If your schema and your `defaultValues` describe the same shape, they stay in sync. If they drift, TypeScript may surface errors depending on how the types overlap, meaning you still have two things to keep aligned even when using a schema.
+TanStack Form also supports schema libraries like Zod and Valibot through [Standard Schema](https://standardschema.dev). You can pass them through the `validators` option for runtime validation. However, the TypeScript types are still inferred from `defaultValues`, not from the schema. If your schema and your `defaultValues` describe the same shape, they stay in sync. If they drift, TypeScript may surface errors depending on how the types overlap, meaning you still have two things to keep aligned even when using a schema.
 
 Note that the form's shape is anchored to whatever you provide as defaults. For optional fields or fields that start with no value at all, you need to provide a default that accurately represents the full range of valid types for that field, or the inference won't reflect it correctly.
 
@@ -63,7 +63,7 @@ Type maintenance in TanStack Form comes down to keeping your `defaultValues` acc
 
 **Formisch**
 
-Formisch is built on Valibot, a TypeScript-first validation library similar to Zod. That relationship is what makes its type inference work differently from the other two.
+Formisch is built on [Valibot](https://valibot.dev), a TypeScript-first validation library similar to Zod. That relationship is what makes its type inference work differently from the other two.
 
 Valibot schemas carry TypeScript type information as part of their construction. When you build a schema, you are simultaneously constructing a runtime validator and a compile-time type description, and these are not two separate things that are kept in sync. They are the same object.
 
