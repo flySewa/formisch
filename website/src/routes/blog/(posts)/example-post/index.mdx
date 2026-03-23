@@ -39,7 +39,7 @@ All three libraries support TypeScript. The more relevant question is where the 
 
 RHF asks you to declare the form's shape as a TypeScript type and pass it in as a generic: `useForm<MyFormValues>()`. That generic is a TypeScript-only construct. It exists purely at compile time and is completely absent at runtime.
 
-The validation schema you configure through a resolver (whether that's Zod, Valibot, Yup, or anything else) is a separate runtime object with no connection to each other. What this means is that TypeScript has no way of knowing whether the type you passed to `useForm` and the schema you passed to the resolver describe the same shape. You can have a type with ten fields and a schema that only validates seven of them, and TypeScript will not flag it. Keeping them aligned is entirely your responsibility, and there is no mechanism to enforce that they stay that way.
+The validation schema you configure through a resolver (whether that's Zod, Valibot, Yup, or anything else) is a separate runtime object with no connection to each other. TypeScript has no way of knowing whether the type you passed to `useForm` and the schema you passed to the resolver describe the same shape. You can have a type with ten fields and a schema that only validates seven of them, and TypeScript will not flag it. Keeping them aligned is entirely your responsibility, and there is no mechanism to enforce that they stay that way.
 
 Most teams handle this by deriving the TypeScript type directly from the schema using the library's inference utilities (Zod's `z.infer`, Valibot's `InferInput`, and so on) rather than writing the type manually. That removes the duplication, but it doesn't change the underlying architecture. The type and the schema are still two separate things that happen to share the same shape because you've wired them together. The resolver configuration that connects them at runtime is still something you set up yourself.
 
@@ -223,15 +223,14 @@ TanStack Form and Formisch exist because the problems teams bring to form librar
 
 RHF's design decisions still make sense for simpler forms. The tradeoffs become visible as forms grow in size and complexity, especially when validation logic, cross-field dependencies, and TypeScript alignment start to accumulate.
 
-**In practice:**
 
-If your forms are mostly static, your team already uses RHF, and you are not experiencing TypeScript or validation issues, stay with RHF. The switching cost is unlikely to justify itself.
+- If your forms are mostly static, your team already uses RHF, and you are not experiencing TypeScript or validation issues, stay with RHF. The switching cost is unlikely to justify itself.
 
-If you are starting a new project in TypeScript and expect forms to grow in complexity, Formisch is worth evaluating. The schema-first approach reduces the number of moving pieces you have to keep aligned over time.
+- If you are starting a new project in TypeScript and expect forms to grow in complexity, Formisch is worth evaluating. The schema-first approach reduces the number of moving pieces you have to keep aligned over time.
 
-If you are already using the TanStack ecosystem and want better validation control than RHF without changing mental models too drastically, TanStack Form is the natural fit.
+- If you are already using the TanStack ecosystem and want better validation control than RHF without changing mental models too drastically, TanStack Form is the natural fit.
 
-If your current RHF setup is already showing signs of strain such as type drift, validation logic spread across components, or performance issues in large field arrays, then evaluating Formisch or TanStack Form becomes more relevant.
+- If your current RHF setup is already showing signs of strain such as type drift, validation logic spread across components, or performance issues in large field arrays, then evaluating Formisch or TanStack Form becomes more relevant.
 
 Formisch makes the most sense for new projects. Migrating an existing RHF codebase to Formisch is not trivial. The mental model is different enough that this is a rewrite of your form layer, not a drop-in replacement. That is not a reason to avoid it, but it is a reason to be clear about the cost before committing to it.
 
@@ -275,4 +274,4 @@ Migrate one form at a time instead of rewriting everything at once. Start with t
 
 ---
 
-It's less about features and more about where you want the complexity to live. RHF keeps it closer to your components. TanStack Form and Formisch move more of it into the form layer. Which one makes sense depends on how much complexity your forms actually carry.
+It's less about features and more about where you want the complexity to live. RHF keeps it closer to your components. Which one makes sense depends on how much complexity your forms actually carry.
