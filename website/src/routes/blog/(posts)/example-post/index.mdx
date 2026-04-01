@@ -414,7 +414,7 @@ Migrate one form at a time instead of rewriting everything at once. Start with t
 | Schema connection | Resolver configuration | Direct schema |
 | Error access | `formState.errors.field` | `field.errors` |
 | Read value | `watch("field")` | `getInput(form, { path: ["field"] })` |
-| Dynamic arrays | `useFieldArray` or `FieldArray` + `insert`, `remove`, `move`, `swap`, `replace` |
+| Dynamic arrays | `useFieldArray` | `useFieldArray` or `FieldArray` + `insert`, `remove`, `move`, `swap`, `replace` |
 
 
 
