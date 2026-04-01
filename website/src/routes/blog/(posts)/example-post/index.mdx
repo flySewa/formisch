@@ -163,23 +163,6 @@ Either way, the mental model is field-centric. Each field is responsible for its
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-// One mode setting. Applies to every field with no exceptions.
-[RHF attaches validation rules at the point of field registration](https://react-hook-form.com/docs/useform/register). When you call `register("email", { required: true, pattern: /.../ })`, those rules live on that field call. Alternatively, you can pass a schema resolver at the form level using Zod, Valibot, Yup, or similar, which maps validation rules to field names through the resolver's output.
-
-Either way, the mental model is field-centric. Each field is responsible for its own validation, and the form is an aggregation of those field-level concerns.
-
-[When validation runs is controlled by a single `mode` option set on the form](https://react-hook-form.com/docs/useform): `onSubmit`, `onBlur`, `onChange`, `onTouched`, or `all`. That mode applies to every field in the form. There is no way to say "validate this field on blur but validate that one on change" without writing custom `onChange` handlers yourself.
-
-```ts
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-
-// One mode setting. Applies to every field with no exceptions.
-const form = useForm({
-  mode: "onBlur",
-  resolver: zodResolver(schema)
-})
-
 // Need username to validate while typing instead?
 // There is no setting for that. You write it yourself.
 ```
@@ -233,9 +216,7 @@ TanStack Form gives you fine-grained control over validation timing and async be
 
 **Formisch**
 
-Formisch centralizes everything in the Valibot schema.
-
-The component registers a field name and everything else comes from the schema, without field-level validators, form-level validator configuration, or resolver setup.
+Formisch centralizes everything in the Valibot schema. The component registers a field name and everything else comes from the schema, without field-level validators, form-level validator configuration, or resolver setup.
 
 ```ts
 import { useForm } from '@formisch/react'
@@ -249,6 +230,42 @@ const schema = v.object({
 
 const form = useForm({ schema })
 ```
+
+Validation runs on form submission by default, rather than on individual field events like `onBlur` or `onChange`. The `<Form>` component intercepts the submit event, runs the schema against all current values, and blocks submission if anything fails. After that first submission attempt, you can configure `revalidate: 'input'` on `useForm` to re-run validation as the user types, giving users silent-until-submit behaviour on first interaction, then live feedback as they correct mistakes. For most forms, this covers the range of timing behaviour users expect.
+
+Async validation follows the same pattern. A username availability check, for example, requires calling your server. In TanStack Form, that async logic lives on the field itself. In Formisch, it lives in the schema using `pipeAsync` and `checkAsync`. The field component is unchanged and still just reads `field.errors`. There is no separate loading state to manage.
+
+```ts
+const schema = v.objectAsync({
+  username: v.pipeAsync(
+    v.string(),
+    v.minLength(3, 'Username must be at least 3 characters.'),
+    v.checkAsync(isUsernameAvailable, 'This username is already taken.')
+  ),
+  password: v.pipe(v.string(), v.minLength(8)),
+})
+```
+
+Cross-field validation, where one field's validity depends on another, works the same way. In RHF, making two password fields validate against each other requires custom event handling in the component. In Formisch, `partialCheck` defines the comparison in the schema and `forward` directs the error to the right field. Neither component knows the other exists.
+
+```ts
+const schema = v.pipe(
+  v.object({
+    password: v.pipe(v.string(), v.minLength(8, 'Your password must have 8 characters or more.')),
+    confirmPassword: v.string(),
+  }),
+  v.forward(
+    v.partialCheck(
+      [['password'], ['confirmPassword']],
+      (input) => input.password === input.confirmPassword,
+      'The two passwords do not match.'
+    ),
+    ['confirmPassword']
+  )
+)
+```
+
+The error surfaces on the confirm password field's `field.errors` with no additional wiring in the component.
 
 When validation rules change, the schema changes and nothing else does.
 
