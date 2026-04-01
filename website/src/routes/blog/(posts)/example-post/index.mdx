@@ -323,21 +323,18 @@ TanStack Form's store-based reactivity manages re-render scope automatically, so
 
 **Formisch**
 
-Formisch uses signals as its reactive model.
+Formisch uses signals as its reactive model. 
 
-A signal represents a single value and tracks exactly which components depend on it. When a signal changes, only those components update. Parent components and unrelated parts of the tree are not affected.
+A signal represents a single value and tracks exactly which components depend on it. When a signal changes, only those components update. There is no subscription setup, no diffing 
+process, and no intermediate notification layer.
 
-The dependency is direct, with no subscription setup, diffing process, or intermediate notification layer. When a field value changes, only the components reading that value re-render.
+The dependency graph is more direct than a store-based model. In a large field array where many rows update frequently, only the component reading that specific value re-renders. This difference is small in most web forms 
+and more noticeable in React Native or in very large dynamic forms.
 
-In practice, the difference between TanStack Form's store and Formisch's signals is small for most web applications. Both provide granular updates and both scale better than RHF once forms become complex.
+Formisch is also framework-agnostic. The same mental model works across React, SolidJS, Vue, Svelte, Preact, and Qwik. That is relevant if your team works across multiple framework environments, or expects that to change.
 
-Signals have a slight efficiency advantage because the dependency graph is more direct and has less overhead. This difference becomes more noticeable in environments like React Native or in very large dynamic forms where many updates occur frequently.
-
-Worth noting: Formisch is framework-agnostic. The same mental model works across React, SolidJS, Vue, Svelte, Preact, and Qwik. That breadth is relevant if your team works across multiple framework environments, or if that changes over time.
-
-For most applications, performance alone is unlikely to be the deciding factor between TanStack Form and Formisch. The more relevant difference is architectural. RHF requires deliberate control of re-render scope. TanStack Form handles it through its store. Formisch handles it at the signal level with minimal overhead.
-
-With Formisch, rendering performance is handled automatically at the signal level, with updates scoped precisely to the components that depend on each value.
+For most applications, the difference between TanStack Form and Formisch comes down to this: both scope re-renders automatically without requiring deliberate component structure. Formisch does it at the signal level, with 
+less overhead as form size and update frequency increases. 
 
 | | State model | Re-render scope | What you manage |
 |---|---|---|---|
