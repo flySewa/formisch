@@ -22,7 +22,7 @@ If you're evaluating React form libraries or deciding between TanStack Form and 
 - **RHF validation is field-centric.** Each field owns its rules. Validation timing is a single form-wide setting. Async loading state is managed in your component.
 - **TanStack Form validation is per-validator.** Each validator specifies its own trigger and manages its own async state. All of this is explicitly configured.
 - **Formisch validation lives entirely in the schema.** Rules are defined in one place without field-level validators or resolver setup.
-- **RHF stores values in the DOM by default.** Components that need to react to value changes subscribe through `watch`, which triggers re-renders.
+- **RHF stores values in RHF's internal object, updating the DOM directly**. Components that need to react to value changes subscribe through watch, which triggers re-renders.
 - **TanStack Form and Formisch both scope re-renders automatically.** Both only update what actually changed. Formisch uses signals, which carry slightly less overhead.
 
 
@@ -290,7 +290,7 @@ With Formisch, validation is entirely schema-driven. Components remain simple, b
 
 **React Hook Form**
 
-[RHF's core design decision is that field values do not live in React state](https://react-hook-form.com/docs). They live in RHF's internal object. RHF updates the native HTML input directly through refs, bypassing React's re-render system entirely. When you type into a field, React does not know anything changed. There is no state update and no re-render. RHF tracks the value internally and updates the input on screen directly through refs, without going through React's re-render system.
+[RHF's core design decision is that field values do not live in React state](https://react-hook-form.com/docs). They live in RHF's internal object. RHF updates the native HTML input directly through refs, bypassing React's re-render system entirely. When you type into a field, React does not know anything changed. There is no state update and no re-render.
 
 This is what makes RHF fast. It is a deliberate architectural choice.
 
