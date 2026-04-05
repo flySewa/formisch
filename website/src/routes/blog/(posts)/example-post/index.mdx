@@ -105,7 +105,7 @@ Note that the form's shape is anchored to whatever you provide as defaults. For 
 
 This also applies to fields that need to accept more than one type. An input that should hold either a string or a number cannot express that through a default value alone. HTML inputs always return strings, so the default will always appear as a string to the form. Handling this requires manual type casting in the `onChange` handler and a union schema to validate the full range of accepted types. The form does not infer the union from the default value.
 
-If you use a validation schema alongside your default values, which most teams do, those two things still have no enforced connection at the Typescript level. A field added to one but not the other will not be caught. The same silent failure that applies to RHF applies here, just between fewer moving parts.
+If you use a validation schema alongside your default values, which most teams do, those two things still have no enforced connection at the TypeScript level. A field added to one but not the other will not be caught. The same silent failure that applies to RHF applies here, just between fewer moving parts.
 
 In summary, type maintenance in TanStack Form comes down to keeping your `defaultValues` accurate, and the form derives everything else from there.
 
@@ -250,10 +250,9 @@ const schema = v.objectAsync({
   password: v.pipe(v.string(), v.minLength(8)),
 });
 ```
-
 For cases where the same username is checked more than once, Valibot's [`cache`](https://valibot.dev/api/cache/) method can wrap the schema to skip re-running the server check for values that have already been validated.
 
-Cross-field validation, where one field's validity depends on another, works the same way. In RHF, making two password fields validate against each other requires custom event handling in the component. In Formisch, `partialCheck` defines the comparison in the schema and `forward` directs the error to the right field. Neither component knows the other exists.
+The same schema-first pattern applies to cross-field validation, where one field's validity depends on another. In RHF, making two password fields validate against each other requires custom event handling in the component. In Formisch, `partialCheck` defines the comparison in the schema and `forward` directs the error to the right field. Neither component knows the other exists.
 
 ```ts
 const schema = v.pipe(
