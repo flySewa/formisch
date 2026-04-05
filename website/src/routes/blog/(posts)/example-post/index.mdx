@@ -159,7 +159,7 @@ We'll look at three aspects of this: where validation rules are defined, when th
 
 Either way, the mental model is field-centric. Each field is responsible for its own validation, and the form is an aggregation of those field-level concerns.
 
-[When validation runs is controlled by a single `mode` option set on the form](https://react-hook-form.com/docs/useform): `onSubmit`, `onBlur`, `onChange`, `onTouched`, or `all`. RHF also provides 
+[Validation runs is controlled by a single `mode` option set on the form](https://react-hook-form.com/docs/useform): `onSubmit`, `onBlur`, `onChange`, `onTouched`, or `all`. RHF also provides 
 `reValidateMode`, which determines how fields with errors behave after the first submission attempt. Both options apply to every field in the form, which means there is no way to say "validate this field on blur but validate that one 
 on change" without writing custom `onChange` handlers yourself.
  
