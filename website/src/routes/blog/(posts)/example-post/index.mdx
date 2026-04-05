@@ -37,7 +37,7 @@ If you're evaluating React form libraries or deciding between TanStack Form and 
 
 All three libraries support TypeScript. The more relevant question is where the types come from and how much work is required to keep them accurate as the form changes.
 
-**React Hook Form**
+###React Hook Form
 
 [RHF asks you to declare the form's shape as a TypeScript type and pass it in as a generic](https://react-hook-form.com/ts): `useForm<MyFormValues>()`. That generic is a TypeScript-only construct. It exists purely at compile time and is completely absent at runtime.
 
@@ -79,7 +79,7 @@ With deeply nested objects, discriminated unions, or complex conditional field t
 
 RHF gives you full control over your type definitions, but keeping them in sync with your validation schema is work you own entirely.
 
-**TanStack Form**
+###TanStack Form
 
 [TanStack Form infers the form's shape from the `defaultValues` you provide when calling `useForm`](https://tanstack.com/form/latest/docs/framework/react/guides/basic-concepts). Mechanically, this means TanStack Form's internals construct a type at the point of form creation, and every subsequent API (field access, value reads, validation state) is typed against that inferred shape.
 
@@ -109,7 +109,7 @@ If you use a validation schema alongside your default values, which most teams d
 
 In summary, type maintenance in TanStack Form comes down to keeping your `defaultValues` accurate, and the form derives everything else from there.
 
-**Formisch**
+###Formisch
 
 [Formisch](https://formisch.dev) is built directly on top of a schema library, which is why its type inference behaves differently from the other two. It currently supports only [Valibot](https://valibot.dev), but could theoretically be extended to support additional schema libraries such as [Zod](https://zod.dev).
 
@@ -153,7 +153,7 @@ Validation logic determines how much your components know about your form's rule
 
 We'll look at three aspects of this: where validation rules are defined, when they run, and how async validation is handled. RHF, TanStack Form, and Formisch answer all three questions differently, and those differences matter more as the form grows.
 
-**React Hook Form**
+###React Hook Form
 
 [RHF attaches validation rules at the point of field registration](https://react-hook-form.com/docs/useform/register). When you call `register("email", { required: true, pattern: /.../ })`, those rules live on that field call. Alternatively, you can pass a schema resolver at the form level using Zod, Valibot, Yup, or similar, which maps validation rules to field names through the resolver's output.
 
@@ -177,7 +177,7 @@ Async validation is supported. You can return a Promise from a `validate` functi
 
 RHF's validation model is explicit and familiar, but the field-centric architecture distributes validation logic across your component tree and limits timing control to a form-wide setting.
 
-**TanStack Form**
+###TanStack Form
 
 [The most significant architectural change in TanStack Form is that validators are first-class objects](https://tanstack.com/form/v1/docs/framework/react/guides/validation). Each validator you define specifies its own trigger: `onChange`, `onBlur`, `onSubmit`, or `onMount` and these triggers are independent of each other.
 
@@ -218,7 +218,7 @@ Form-level validators are also part of the core design. These validators run aga
 
 TanStack Form gives you fine-grained control over validation timing and async behavior, but requires more explicit configuration to get there.
 
-**Formisch**
+###Formisch
 
 Formisch centralizes everything in the Valibot schema. The component registers a field name and everything else comes from the schema, without field-level validators, or resolver setup.
 
@@ -250,6 +250,8 @@ const schema = v.objectAsync({
   password: v.pipe(v.string(), v.minLength(8)),
 });
 ```
+
+For cases where the same username is checked more than once, Valibot's [`cache`](https://valibot.dev/api/cache/) method can wrap the schema to skip re-running the server check for values that have already been validated.
 
 Cross-field validation, where one field's validity depends on another, works the same way. In RHF, making two password fields validate against each other requires custom event handling in the component. In Formisch, `partialCheck` defines the comparison in the schema and `forward` directs the error to the right field. Neither component knows the other exists.
 
@@ -295,7 +297,7 @@ With Formisch, validation is entirely schema-driven. Components remain simple, b
 
 ## Performance under complexity
 
-**React Hook Form**
+###React Hook Form
 
 [RHF's core design decision is that field values do not live in React state](https://react-hook-form.com/docs). They live in RHF's internal object. RHF updates the native HTML input directly through refs, bypassing React's re-render system entirely. When you type into a field, React does not know anything changed. There is no state update and no re-render.
 
@@ -316,7 +318,7 @@ For most production forms, this never becomes a problem. The tradeoff only surfa
 
 RHF avoids re-renders by default, but once values enter React state, controlling re-render scope becomes your responsibility.
 
-**TanStack Form**
+###TanStack Form
 
 [TanStack Form stores field values in a reactive store, and components subscribe only to the specific slice of state they use](https://tanstack.com/form/latest/docs/framework/react/guides/reactivity). When a field changes, only components subscribed to that field update.
 
@@ -328,7 +330,7 @@ Note that using a schema as a form-level `onChange` validator can cause all fiel
 
 TanStack Form's store-based reactivity manages re-render scope automatically, so performance remains stable as forms grow without additional architectural work.
 
-**Formisch**
+###Formisch
 
 Formisch uses signals as its reactive model.
 
@@ -398,7 +400,7 @@ Migrating from RHF to Formisch is not a drop-in replacement, and the mental mode
 
 The core change is that the schema becomes the starting point for everything. In RHF, you start with a component and attach form behavior to it. In Formisch, you start with a schema and build the component around it.
 
-**What changes:**
+###What changes:
 
 - `useForm<MyFormValues>()` becomes `useForm({ schema: MySchema })`. The TypeScript type is inferred from the schema.
 - `register("fieldName")` becomes a [`<Field of={form} path={["fieldName"]}>`](https://formisch.dev/react/api/Field/) component that exposes `field.props`, `field.input`, and `field.errors`.
