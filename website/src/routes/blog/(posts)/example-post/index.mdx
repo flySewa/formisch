@@ -27,7 +27,7 @@ If you're evaluating React form libraries or deciding between TanStack Form and 
 - **Formisch types come directly from the schema.** The Valibot schema is both the runtime validator and the TypeScript type source.
 - **RHF validation is field-centric.** Each field owns its rules. Validation timing is a single form-wide setting. Async loading state is managed in your component.
 - **TanStack Form validation is per-validator.** Each validator specifies its own trigger and manages its own async state. All of this is explicitly configured.
-- **Formisch validation lives entirely in the schema.** Rules are defined in one place without field-level validators or resolver setup.
+- **Formisch validation rules lives entirely in the schema.** Rules are defined in one place without field-level validators or resolver setup.
 - **RHF stores values in RHF's internal object, updating the DOM directly**. Components that need to react to value changes subscribe through watch, which triggers re-renders.
 - **TanStack Form and Formisch both scope re-renders automatically.** Both only update what actually changed. Formisch uses signals, which carry slightly less overhead.
 
@@ -41,7 +41,7 @@ All three libraries support TypeScript. The more relevant question is where the 
 
 [RHF asks you to declare the form's shape as a TypeScript type and pass it in as a generic](https://react-hook-form.com/docs/useform): `useForm<MyFormValues>()`. That generic is a TypeScript-only construct. It exists purely at compile time and is completely absent at runtime.
 
-The validation schema you configure through a resolver (whether that's Zod, Valibot, Yup, or anything else) is a separate runtime object with no connection to each other. TypeScript has no way of knowing whether the type you passed to `useForm` and the schema you passed to the resolver describe the same shape. You can have a type with ten fields and a schema that only validates seven of them, and TypeScript will not flag it. Keeping them aligned is entirely your responsibility, and there is no mechanism to enforce that they stay that way.
+The validation schema you configure through a resolver (whether that's Zod, Valibot, Yup, or anything else) is a separate runtime object with no connection to each other. TypeScript has no enforced connection between the type you passed to `useForm` and the schema you passed to the resolver. You can have a type with ten fields and a schema that only validates seven of them, and TypeScript will not flag it. Keeping them aligned is entirely your responsibility, and there is no mechanism to enforce that they stay that way.
 
 ```ts
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -159,8 +159,10 @@ We'll look at three aspects of this: where validation rules are defined, when th
 
 Either way, the mental model is field-centric. Each field is responsible for its own validation, and the form is an aggregation of those field-level concerns.
 
-[When validation runs is controlled by a single `mode` option set on the form](https://react-hook-form.com/docs/useform): `onSubmit`, `onBlur`, `onChange`, `onTouched`, or `all`. That mode applies to every field in the form. There is no way to say "validate this field on blur but validate that one on change" without writing custom `onChange` handlers yourself.
-
+[When validation runs is controlled by a single `mode` option set on the form](https://react-hook-form.com/docs/useform): `onSubmit`, `onBlur`, `onChange`, `onTouched`, or `all`. RHF also provides 
+`reValidateMode`, which determines how fields with errors behave after the first submission attempt. Both options apply to every field in the form, which means there is no way to say "validate this field on blur but validate that one 
+on change" without writing custom `onChange` handlers yourself.
+ 
 ```ts
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -233,9 +235,10 @@ const schema = v.object({
 const form = useForm({ schema });
 ```
 
-Validation runs on form submission by default, rather than on individual field events like `onBlur` or `onChange`. The `<Form>` component intercepts the submit event, runs the schema against all current values, and blocks submission if anything fails. After that first submission attempt, you can configure `revalidate: 'input'` on `useForm` to re-run validation as the user types, giving users silent-until-submit behaviour on first interaction, then live feedback as they correct mistakes. For most forms, this covers the range of timing behaviour users expect.
+Validation runs when a field is blurred or the form is submitted by default, rather than on individual field events like `onChange`. The `<Form>` component intercepts the submit event, runs the schema against all current values, and blocks submission if anything fails. After that first submission attempt, you can configure `revalidate: 'input'` on `useForm` to re-run validation as the user types, giving users silent-until-submit behaviour on first interaction, then live feedback as they correct mistakes. For most forms, this covers the range of timing behaviour users expect.
 
-Async validation follows the same pattern. A username availability check, for example, requires calling your server. In TanStack Form, that async logic lives on the field itself. In Formisch, it lives in the schema using `pipeAsync` and `checkAsync`. The field component is unchanged and still just reads `field.errors`. There is no separate loading state to manage.
+Async validation follows the same pattern. A username availability check, for example, requires calling your server. In TanStack Form, that async logic lives on the field itself. In Formisch, it lives in the schema using `pipeAsync` and `checkAsync`.  The field component is unchanged and just reads `field.errors`. Rather than wiring up a per-field async validator with its own trigger and loading state, you configure the async rule once in the schema and, the form exposes 
+`isValidating` on the form store if you need to show a global loading indicator. 
 
 ```ts
 const schema = v.objectAsync({
@@ -298,7 +301,8 @@ With Formisch, validation is entirely schema-driven. Components remain simple, b
 
 This is what makes RHF fast. It is a deliberate architectural choice.
 
-The tradeoff appears when React needs to know about a field's value. Conditional rendering, UI updates as you type, and cross-field rules all require React to be aware of the current value. The mechanism for that is [`watch`](https://react-hook-form.com/docs/useform/watch), which opts a field into React state and causes re-renders when that field changes.
+The tradeoff appears when React needs to know about a field's value. Conditional rendering, UI updates as you type, and cross-field rules all require React to be aware of the current value. The two mechanisms for this are `watch`, which triggers re-renders at the root of the form, and `useWatch`, which isolates re-renders at the component level. Using `watch` broadly is the common pattern and the source of most performance complaints. `useWatch` is the 
+more focused approach but requires deliberate structure to use effectively. 
 
 In small forms this is not a problem. In larger forms with many watched fields, the re-render problem returns, but now in a more selective way.
 
