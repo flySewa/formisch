@@ -250,6 +250,7 @@ const schema = v.objectAsync({
   password: v.pipe(v.string(), v.minLength(8)),
 });
 ```
+
 For cases where the same username is checked more than once, Valibot's [`cache`](https://valibot.dev/api/cache/) method can wrap the schema to skip re-running the server check for values that have already been validated.
 
 The same schema-first pattern applies to cross-field validation, where one field's validity depends on another. In RHF, making two password fields validate against each other requires custom event handling in the component. In Formisch, `partialCheck` defines the comparison in the schema and `forward` directs the error to the right field. Neither component knows the other exists.
