@@ -281,9 +281,9 @@ The error surfaces on the confirm password field's `field.errors` with no additi
 
 When validation rules change, you update the schema, and the rest of the form reads from that definition. 
 
-This becomes more noticeable as validation rules evolve, or as the form grows in complexity. In RHF, validation logic is either attached to individual fields or wired through a resolver, so changes often involve updating rules in multiple places. In TanStack Form, validation is centralized in configuration, but still lives alongside component code through validators and their triggers. In Formisch, validation lives entirely in the schema. When rules change, you update the schema, and the rest of the form derives from that definition.
+This becomes more noticeable as validation rules evolve or as the form grows in complexity. In RHF, validation logic is either attached to individual fields or wired through a resolver, so changes often involve updating rules in multiple places. In TanStack Form, validation is centralized in configuration, but still lives alongside component code through validators and their triggers. In Formisch, validation lives entirely in the schema. When rules change, you update the schema, and the rest of the form derives from that definition.
 
-This also affects how portable your components are. In RHF, field components tend to carry implicit knowledge of their validation rules. In TanStack Form, they are tied to the validators configured for them. In Formisch, field components don’t contain validation logic—they adapt to whatever schema is provided.
+This also affects how portable your components are. In RHF, field components tend to carry implicit knowledge of their validation rules. In TanStack Form, they are tied to the validators configured for them. In Formisch, field components don’t contain validation logic, they adapt to whatever schema is provided.
 
 With Formisch, validation is entirely schema-driven. Components remain simple, but the schema becomes the single place where correctness is defined. 
 
@@ -306,7 +306,7 @@ This is what makes RHF fast. It is a deliberate architectural choice.
 The tradeoff appears when React needs to know about a field's value. Conditional rendering, UI updates as you type, and cross-field rules all require React to be aware of the current value. The two mechanisms for this are `watch`, which triggers re-renders at the root of the form, and `useWatch`, which isolates re-renders at the component level. Using `watch` broadly is the common pattern and the source of most performance complaints. `useWatch` is the 
 more focused approach but requires deliberate structure to use effectively. 
 
-In small forms this is not a problem but in larger forms with many watched fields, the re-render problem returns, but scoped to the components subscribed to those fields. 
+In small forms, this is not a problem, but in larger forms with many watched fields, the re-render problem returns, but scoped to the components subscribed to those fields. 
 
 [`useFieldArray`](https://react-hook-form.com/docs/usefieldarray) makes this more visible. When you append, remove, or reorder rows, RHF updates its internal array state. Components subscribed broadly to `formState`, especially at higher levels, may re-render as a result depending on how subscriptions are structured.
 
