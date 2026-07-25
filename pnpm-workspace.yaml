@@ -9,6 +9,8 @@ allowBuilds:
   better-sqlite3: true
   deasync: true
   esbuild: true
+  lmdb: false
+  msgpackr-extract: false
   sharp: true
   vercel: true
   workerd: true
