@@ -4,8 +4,8 @@
 
 - [Introduction](/angular/guides/introduction/)
 - [Installation](/angular/guides/installation/)
-- [Comparison](/angular/guides/comparison/)
 - [Coding agents](/angular/guides/coding-agents/)
+- [Comparison](/angular/guides/comparison/)
 
 ## Main concepts
 
