@@ -471,5 +471,32 @@ describe('useField', () => {
         ).toHaveLength(1);
       });
     });
+
+    test('should drop a detached element from the reset baseline after the elements moved', () => {
+      const schema = v.object({ name: v.string() });
+
+      let capturedForm: FormStore<typeof schema> | undefined;
+
+      function Test(): JSX.Element {
+        const form = createForm({ schema, initialInput: { name: '' } });
+        capturedForm = form;
+        const field = useField(form, { path: ['name'] });
+        return <input data-testid="input" {...field.props} />;
+      }
+
+      const { unmount } = render(() => <Test />);
+      const element = screen.getByTestId('input');
+      const internalFieldStore = getFieldStore(capturedForm![INTERNAL], [
+        'name',
+      ]);
+      expect(internalFieldStore.initialElements).toContain(element);
+
+      // Simulate an array operation moving the elements to another store
+      internalFieldStore.elements = [];
+
+      // The detached element must not survive in the reset baseline
+      unmount();
+      expect(internalFieldStore.initialElements).not.toContain(element);
+    });
   });
 });
