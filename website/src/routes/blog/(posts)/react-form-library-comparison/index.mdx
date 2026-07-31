@@ -341,7 +341,7 @@ A signal represents a single value and tracks exactly which components depend on
 The dependency graph is more direct than a store-based model. In a large field array where many rows update frequently, only the component reading that specific value re-renders. This difference is small in most web forms
 and more noticeable in React Native or in very large dynamic forms.
 
-Formisch is also framework-agnostic. The same mental model works across React, SolidJS, Vue, Svelte, Preact, and Qwik. That is relevant if your team works across multiple framework environments, or expects that to change.
+Formisch is also framework-agnostic. The same mental model works across Angular, Preact, Qwik, React, React Native, SolidJS, Svelte, and Vue. That is relevant if your team works across multiple framework environments, or expects that to change.
 
 For most applications, the difference between TanStack Form and Formisch comes down to this: both scope re-renders automatically without requiring deliberate component structure. Formisch does it at the signal level, which can reduce overhead as form size and update frequency increase.
 

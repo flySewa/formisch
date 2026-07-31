@@ -73,7 +73,7 @@ You can run this exact example on the <Link href="/playground/login/">playground
 
 The `path` is fully typed against your schema, so if you rename a field, TypeScript flags every place that no longer matches. Because state lives in fine-grained signals, only the fields that actually change re-render. And thanks to the modular design, the bundle size starts at around 2.5 kB.
 
-Formisch runs on React, Vue, Solid, Qwik, Svelte, and Preact from a single core, but there is no adapter tax. At build time it swaps in your framework's own reactivity, so you get real React updates, real Solid signals, and native performance with no extra layer in your bundle.
+Formisch runs on Angular, Preact, Qwik, React, React Native, SolidJS, Svelte, and Vue from a single core, but there is no adapter tax. At build time it swaps in your framework's own reactivity, so you get real React updates, real Solid signals, and native performance with no extra layer in your bundle.
 
 For a deeper look at the design decisions behind Formisch, read our <Link href="/blog/one-core-six-frameworks/">architecture post</Link>. We explain how the runtime works and why there is no abstraction layer.
 
@@ -107,7 +107,7 @@ If something behaves unexpectedly in your forms, that feedback is the most valua
 
 ## Give it a try
 
-Install it for your framework. Here is the React package as an example. Every other framework works the same way, just swap in `@formisch/solid`, `@formisch/vue`, `@formisch/svelte`, `@formisch/preact`, or `@formisch/qwik`:
+Install it for your framework. Here is the React package as an example. Every other framework works the same way, just swap in `@formisch/angular`, `@formisch/preact`, `@formisch/qwik`, `@formisch/react-native`, `@formisch/solid`, `@formisch/svelte`, or `@formisch/vue`:
 
 ```bash
 npm install @formisch/react valibot
