@@ -5,4 +5,12 @@ export const properties: Record<string, PropertyProps> = {
     modifier: 'extends',
     type: 'unknown',
   },
+  TPath: {
+    modifier: 'extends',
+    type: {
+      type: 'custom',
+      name: 'RequiredPath',
+      href: '/core/api/RequiredPath/',
+    },
+  },
 };
