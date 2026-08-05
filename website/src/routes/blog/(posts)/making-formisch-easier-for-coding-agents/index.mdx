@@ -18,7 +18,7 @@ Most of the work fell into a few areas.
 
 ## Two agent skills
 
-Formisch defines form values and validation with Valibot schemas, so an agent needs both skills. The Formisch skill covers form state, field paths, and array fields, and the Valibot skill covers the schemas those fields are typed by. Both use the current API and include the patterns we recommend, so the code an agent writes matches the examples in our guides.
+The Formisch skill works alongside the Valibot skill, giving coding agents the context they need across both libraries. The Formisch skill covers form state, field paths, and array fields, while the Valibot skill covers the schemas those fields are typed by. Both use the current API and include the patterns we recommend, so the code an agent writes follows the examples in our guides. 
 
 Install them with one command.
 
@@ -26,7 +26,7 @@ Install them with one command.
 npx skills add open-circle/agent-skills --skill formisch valibot
 ```
 
-We recommend installing both, and being specific in prompts. When there are multiple valid ways to implement something, a model will usually choose the approach it has seen most often. Giving it the intended direction helps it produce the result you want.
+We recommend installing it, and being specific in prompts. When there are multiple valid ways to implement something, a model will usually choose the approach it has seen most often. Giving it the intended direction helps it produce the result you want.
 
 ## An MCP server
 
