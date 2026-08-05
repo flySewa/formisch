@@ -12,7 +12,7 @@ authors:
 
 import { Link } from '~/components';
 
-Formisch is new, so there isn't much code for models to have learned from yet. That made good documentation even more important, so we spent the last few weeks reworking it to make it easier for coding agents to use.
+We assume a lot of people use coding agents when they're building with Formisch, and because the library is new, there isn't much code for models to have learned from yet. That makes good documentation even more important, so we spent the last few weeks reworking it to make it easier for agents to use.
 
 Most of the work fell into a few areas.
 
@@ -26,13 +26,13 @@ Install them with one command.
 npx skills add open-circle/agent-skills --skill formisch valibot
 ```
 
-The Formisch skill is also published at [`/.well-known/agent-skills/formisch/SKILL.md`](/.well-known/agent-skills/formisch/SKILL.md) and listed in our [discovery index](/.well-known/agent-skills/index.json).
+We recommend installing both, and being specific in prompts. When there are multiple valid ways to implement something, a model will usually choose the approach it has seen most often. Giving it the intended direction helps it produce the result you want.
 
 ## An MCP server
 
 Our MCP server gives coding agents direct access to the Formisch documentation while they work. When an agent needs information about a specific part of the library, it can search the docs and retrieve the relevant page instead of relying only on its training data or loading unrelated documentation.
 
-We run one at https://formisch.dev/mcp. It is free to use and doesn't require authentication.
+We run one at `https://formisch.dev/mcp`. It is free to use and doesn't require authentication.
 
 Add it to Claude Code with this:
 
@@ -52,7 +52,11 @@ For Cursor and other tools that use a JSON configuration file, add this entry:
 }
 ```
 
-The server provides three tools. `search_docs` searches the documentation and returns matching pages. `get_doc` reads a specific page and returns it as Markdown. `list_docs` lists all pages grouped by framework and area.
+The server provides three tools.
+
+- `search_docs` searches the documentation and returns matching pages
+- `get_doc` reads a specific page and returns it as Markdown
+- `list_docs` lists all pages grouped by framework and area
 
 All three take a framework, so setting it to `react` returns React pages plus the shared form methods and core types while excluding the other seven. `get_doc` also reports when a page exists for other frameworks and links to those versions, so an agent working in one framework doesn't follow an example written for another.
 
@@ -71,7 +75,5 @@ Documentation is one part of making a library easier for coding agents to use. T
 Formisch is one framework-agnostic core with a thin adapter per framework and no abstraction layer in between. Our <Link href="/blog/one-core-six-frameworks/">architecture post</Link> covers how that works. For a model it means the same schema, field paths, store, and methods across every framework, with only the reactivity syntax changing. So a model learns one set of primitives and applies them across eight frameworks instead of learning eight libraries.
 
 The schema is the single source of truth for validation and types, so there is no second declaration to keep in sync and no way for the two to drift apart.
-
-We still recommend installing both skills and being specific in prompts. In our own testing, smaller models defaulted to more familiar patterns on fields where the DOM value isn't a string, while larger ones handled them correctly. When there are multiple valid ways to implement something, a model will usually choose the approach it has seen most often. Giving it the intended direction helps it produce the result you want.
 
 Everything above is available on the coding agents page for <Link href="/angular/guides/coding-agents/">Angular</Link>, <Link href="/preact/guides/coding-agents/">Preact</Link>, <Link href="/qwik/guides/coding-agents/">Qwik</Link>, <Link href="/react/guides/coding-agents/">React</Link>, <Link href="/react-native/guides/coding-agents/">React Native</Link>, <Link href="/solid/guides/coding-agents/">Solid</Link>, <Link href="/svelte/guides/coding-agents/">Svelte</Link> and <Link href="/vue/guides/coding-agents/">Vue</Link>. [Valibot](https://valibot.dev/guides/coding-agents/), which Formisch uses for schemas, has the same setup.
