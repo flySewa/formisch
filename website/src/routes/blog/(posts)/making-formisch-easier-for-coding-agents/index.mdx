@@ -32,7 +32,7 @@ An agent reading the reference now gets the actual types and behaviour.
 
 When your agent fetches a documentation page, it gets the navigation, the scripts and the styling along with it, and pays for all of that in context without using any of it. So we now publish a Markdown version of every page, with the same content and none of the rest. Your agent can read several of them for what one page used to cost.
 
-API pages keep their full type signatures, and the links between pages point at Markdown, so an agent following a reference between pages never has to switch formats.
+We also added an `X-Markdown-Tokens` header to every Markdown response, so a tool can check what a page costs before loading it. API pages keep their full type signatures, and the links between pages point at Markdown, so an agent following a reference between pages never has to switch formats.
 
 ## LLMs.txt, one set per framework
 
