@@ -38,7 +38,7 @@ We also added an `X-Markdown-Tokens` header to every Markdown response, so a too
 
 We publish four `llms.txt` files for each of the eight frameworks, because handing a Vue developer's agent the React documentation is a slower way of getting the wrong answer.
 
-For React that's `llms-react.txt` as a table of contents, `llms-react-full.txt` for the entire React documentation, and `llms-react-guides.txt` and `llms-react-api.txt` for the guides and the API reference on their own. The same four exist for every framework, with `llms-blog.txt` alongside them. An agent working in Vue loads Vue documentation and nothing else.
+For React that's `llms-react.txt` as a table of contents, `llms-react-full.txt` for the entire React documentation, and `llms-react-guides.txt` and `llms-react-api.txt` for the guides and the API reference on their own. The same four exist for every framework, with `llms-blog.txt` alongside them. An agent working in Vue loads Vue documentation plus the shared form methods and core types, without the other seven frameworks.
 
 ## Two agent skills
 
