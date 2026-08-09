@@ -14,8 +14,6 @@ import { Link } from '~/components';
 
 We assume a lot of people use coding agents when they're building with Formisch, and because the library is new, there isn't much code for models to have learned from yet. That makes good documentation even more important, so we spent the last few weeks reworking it to make it easier for agents to use.
 
-Most of the documentation was already written. The problem was that agents couldn't always find it, and couldn't always trust what they found. A lot of our work went into both.
-
 ## The code examples now work
 
 We went through the examples against the source and corrected 239 pages, 112 of them guides. A lot of what we found was framework-specific. Vue's file input example, for instance, bound `field.props` directly to the input, which Vue doesn't allow on file inputs, so the field never received the selection.
