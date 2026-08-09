@@ -14,7 +14,7 @@ import { Link } from '~/components';
 
 We assume a lot of people use coding agents when they're building with Formisch, and because the library is new, there isn't much code for models to have learned from yet. That makes good documentation even more important, so we spent the last few weeks reworking it to make it easier for agents to use.
 
-An agent copying an example from our docs has no way of checking it, and Formisch runs on eight frameworks. A lot of our work went into making sure those examples are right.
+Most of the documentation was already written. The problem was that agents couldn't always find it, and couldn't always trust what they found. A lot of our work went into both.
 
 ## The code examples now work
 
@@ -28,21 +28,27 @@ We checked the API reference against the library as well. `getDirtyPaths`, for i
 
 An agent reading the reference now gets the actual types and behaviour.
 
-## Every page is now available as Markdown
+## The Markdown is generated from the page now
 
-When your agent fetches a documentation page, it gets the navigation, the scripts and the styling along with it, and pays for all of that in context without using any of it. So we now publish a Markdown version of every page, with the same content and none of the rest. Your agent can read several of them for what one page used to cost.
+We were already publishing a `.md` file for every page, but it was a copy of the source file, and our source files have components in them. Where the page showed a full type signature or a list of related links, the `.md` file just had the tag that produces them, so an agent reading it got less than you would. Now the Markdown is generated the way the page is, with those components turned into content.
+
+That's worth having because of what an HTML page carries. When your agent fetches one it gets the navigation, the scripts and the styling along with it, and pays for all of that in context without using any of it. The Markdown version has the content and none of the rest, so your agent can read several pages for what one used to cost.
 
 We also added an `X-Markdown-Tokens` header to every Markdown response, so a tool can check what a page costs before loading it. API pages keep their full type signatures, and the links between pages point at Markdown, so an agent following a reference between pages never has to switch formats.
 
-## LLMs.txt, one set per framework
+## Every page now points to llms.txt
 
-We publish four `llms.txt` files for each of the eight frameworks, because handing a Vue developer's agent the React documentation is a slower way of getting the wrong answer.
+We'd been publishing `llms.txt` for a while, and nothing on the site pointed at it, so an agent had to already know it was there. Every Markdown page now links back to it, and the file opens with a summary saying what's in it and where the rest of the files are.
 
-For React that's `llms-react.txt` as a table of contents, `llms-react-full.txt` for the entire React documentation, and `llms-react-guides.txt` and `llms-react-api.txt` for the guides and the API reference on their own. The same four exist for every framework, with `llms-blog.txt` alongside them. An agent working in Vue loads Vue documentation plus the shared form methods and core types, without the other seven frameworks.
+There are four for each of the eight frameworks, because handing a Vue developer's agent the React documentation is a slower way of getting the wrong answer. For React that's `llms-react.txt` as a table of contents, `llms-react-full.txt` for the entire React documentation, and `llms-react-guides.txt` and `llms-react-api.txt` for the guides and the API reference on their own. `llms-blog.txt` sits alongside them. An agent working in Vue loads Vue documentation plus the shared form methods and core types, without the other seven frameworks.
 
-## Two agent skills
+## Agents can find the skill now
 
-Formisch defines form values and validation with Valibot schemas, so an agent building a form needs both halves. The Formisch skill covers form state, field paths and array fields. The Valibot skill covers the schemas those fields are typed by. Both carry the current API and the patterns we recommend, so the code your agent writes follows the examples in our guides.
+Formisch defines form values and validation with Valibot schemas, so an agent building a form needs both skills. The Formisch skill covers form state, field paths and array fields, and the Valibot skill covers the schemas those fields are typed by.
+
+Both live in `open-circle/agent-skills`, and until recently that was the only place they lived. Nothing on formisch.dev served them or linked to them, so you had to know the repo existed to point your agent at them. The site now publishes the Formisch skill at `/.well-known/agent-skills/formisch/SKILL.md` and lists it in a discovery index, so an agent looking for one can find it without being told.
+
+Installing is still one command.
 
 ```bash
 npx skills add open-circle/agent-skills --skill formisch valibot
@@ -50,9 +56,9 @@ npx skills add open-circle/agent-skills --skill formisch valibot
 
 We still recommend being specific in prompts. When several approaches are valid, a model picks the one it has seen most often, and telling it which one you want usually settles it.
 
-## An MCP server that knows your framework
+## We now run an MCP server
 
-We run an MCP server at `https://formisch.dev/mcp`. It's free, needs no authentication, and gives your agent three tools:
+It's at `https://formisch.dev/mcp`, free, needs no authentication, and gives your agent three tools:
 
 - `search_docs` searches the documentation and returns matching pages
 - `get_doc` reads a specific page and returns it as Markdown
@@ -80,7 +86,7 @@ All three tools take a framework. Set it to `react` and you get React pages plus
 
 ## The whole site is static now
 
-None of this helps much if the pages are slow, so every page is generated ahead of time and served as a file. That's more than 340 pre-rendered pages, with a time to first byte of around 80 ms from the edge cache. Agents tend to pull several pages while working through one task, so it adds up.
+None of this helps much if the pages are slow, so every page is generated ahead of time and served as a file. That's more than 340 pre-rendered pages, so every page an agent asks for is already built and comes back in around 80 ms from the edge cache.
 
 Thanks to the [ZanReal](https://zanreal.com/) team for making that possible. They wrote about the [migration](https://zanreal.com/case-studies/valibot-formisch-static-docs) if you want the detail.
 
@@ -90,4 +96,4 @@ We think a lot of this works because of how Formisch is built, which is the part
 
 Formisch is one framework-agnostic core with a thin adapter per framework and no abstraction layer in between. Our <Link href="/blog/one-core-six-frameworks/">architecture post</Link> covers how that works. What it means for a model is that the form it writes for React and the form it writes for Svelte are the same form, with the same schema, field paths, store and methods, and only the reactivity syntax changing. So a model learns one set of primitives and applies them eight times over instead of learning eight libraries.
 
-Everything above is on the coding agents page for <Link href="/angular/guides/coding-agents/">Angular</Link>, <Link href="/preact/guides/coding-agents/">Preact</Link>, <Link href="/qwik/guides/coding-agents/">Qwik</Link>, <Link href="/react/guides/coding-agents/">React</Link>, <Link href="/react-native/guides/coding-agents/">React Native</Link>, <Link href="/solid/guides/coding-agents/">Solid</Link>, <Link href="/svelte/guides/coding-agents/">Svelte</Link> and <Link href="/vue/guides/coding-agents/">Vue</Link>. [Valibot](https://valibot.dev/guides/coding-agents/), which Formisch uses for schemas, has the same setup.
+The skill, the MCP server, the LLMs.txt files and the Markdown versions are all documented on the coding agents page for <Link href="/angular/guides/coding-agents/">Angular</Link>, <Link href="/preact/guides/coding-agents/">Preact</Link>, <Link href="/qwik/guides/coding-agents/">Qwik</Link>, <Link href="/react/guides/coding-agents/">React</Link>, <Link href="/react-native/guides/coding-agents/">React Native</Link>, <Link href="/solid/guides/coding-agents/">Solid</Link>, <Link href="/svelte/guides/coding-agents/">Svelte</Link> and <Link href="/vue/guides/coding-agents/">Vue</Link>. [Valibot](https://valibot.dev/guides/coding-agents/), which Formisch uses for schemas, has the same setup.
