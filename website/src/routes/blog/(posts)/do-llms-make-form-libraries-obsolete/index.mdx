@@ -91,9 +91,7 @@ You are faster, for a start. The model has less code to write, and it can work f
 
 You're also spending less time supervising it. A library has already made decisions about state, validation, subscriptions, field arrays, and all the other pieces that make forms complicated. You can tell the model what the form needs to do and let the library handle the parts that have already been solved.
 
-And the result is usually better, too. You get the behavior the library has accumulated over years of use, along with features you might never think to ask an LLM to implement. Focusing the first field with an error after a failed submit is a small example, but it's exactly the kind of polish that comes out of the box when the mechanics belong to a library.
-
-That's the pattern worth keeping: the library does the repetitive work once, and the LLM builds on top of it.
+And the result is usually better, too. You get the behavior the library has accumulated over years of use, along with features you might never think to ask an LLM to implement. When a form submission fails, a good one automatically moves focus to the first field with an error so the user knows exactly where to look. That’s the kind of detail that comes with a library by default and gets forgotten when you’re generating everything from scratch.
 
 ## Back to that login form
 
