@@ -2,17 +2,19 @@
 cover: LLMs and Forms
 title: 'Do LLMs Make Form Libraries Obsolete?'
 description: >-
-  LLMs can generate a login form in seconds, but most of that code is mechanics that get reinvented on every form. Here's what a library settles once, and why that matters more when an agent is doing the writing.
+  LLMs can generate a login form in seconds, but most of that code is mechanics
+  that get reinvented on every form. Here's what a library settles once, and why
+  that matters more when an agent is doing the writing.
 published: 2026-09-19
 authors:
   - flySewa
 ---
 
-It’s a bit awkward for a form library to admit, but a lot of the repetitive code we used to save you from writing, an LLM writes for you now. 
+It's a bit awkward for a form library to admit, but a lot of the repetitive code we used to save you from writing, an LLM writes for you now.
 
-Boilerplate, state wiring, validation handlers. It takes about five seconds and costs a few cents. If that’s the whole job, there’s practically no use for a form library anymore.
+Boilerplate, state wiring, validation handlers. It takes about five seconds and costs a few cents. If that's the whole job, there's practically no use for a form library anymore.
 
-So let’s find out whether that’s the whole job. The easiest way is to count what’s in the code.
+So let's find out whether that's the whole job. The easiest way is to count what's in the code.
 
 ## Count what's in the output
 
@@ -91,7 +93,7 @@ You are faster, for a start. The model has less code to write, and it can work f
 
 You're also spending less time supervising it. A library has already made decisions about state, validation, subscriptions, field arrays, and all the other pieces that make forms complicated. You can tell the model what the form needs to do and let the library handle the parts that have already been solved.
 
-And the result is usually better, too. You get the behavior the library has accumulated over years of use, along with features you might never think to ask an LLM to implement. When a form submission fails, a good one automatically moves focus to the first field with an error so the user knows exactly where to look. That’s the kind of detail that comes with a library by default and gets forgotten when you’re generating everything from scratch.
+And the result is usually better, too. You get the behavior the library has accumulated over years of use, along with features you might never think to ask an LLM to implement. When a form submission fails, a good one automatically moves focus to the first field with an error so the user knows exactly where to look. That's the kind of detail that comes with a library by default and gets forgotten when you're generating everything from scratch.
 
 ## Back to that login form
 
@@ -99,9 +101,9 @@ One last thing about the form we started with, the one the model wrote in five s
 
 Ship it. For one form, on one page, in one app, it'll do the job.
 
-The headache kicks in around the sixth form: you've got checkouts with conditional fields, multi-step wizards running async validation, and those instances where a single requirement change forces someone to re-prompt, re-review, and re-test code that should have been a one-line schema edit. 
+The headache kicks in around the sixth form: you've got checkouts with conditional fields, multi-step wizards running async validation, and those instances where a single requirement change forces someone to re-prompt, re-review, and re-test code that should have been a one-line schema edit.
 
-Forms are still state machines. Your LLM just became a very fast typist. Give it good primitives to type against and let the library handle the mechanics. 
+Forms are still state machines. Your LLM just became a very fast typist. Give it good primitives to type against and let the library handle the mechanics.
 
 ## Try Formisch
 
